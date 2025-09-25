@@ -33,7 +33,14 @@ const products = [
     brand: 'Triumph',
     price: 12300,
     image: 'https://images.unsplash.com/photo-1723720222378-0c7ab126b200?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  }
+  },
+  {
+    id: 'moto-5',
+    name: 'GSX RR',
+    brand: 'Suzuki',
+    price: 12300,
+    image: 'https://images.unsplash.com/photo-1611873189125-324514ebd94e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
 ]
 
 export default products

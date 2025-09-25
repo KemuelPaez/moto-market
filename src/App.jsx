@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Header from './components/Header'
 import Banner from './components/Banner'
+import LogoFeature from './components/LogoFeature'
 import ProductList from './components/ProductList'
 import Cart from './components/Cart'
 import productsData from './data/products'
@@ -23,11 +24,20 @@ export default function App() {
 		.slice(0, 5)
 		.map(([name]) => name)
 
-	const filtered = productsData.filter(p => {
-		const matchBrand = brand === 'All' || p.brand === brand
-		const matchQuery = p.name.toLowerCase().includes(query.toLowerCase())
-		return matchBrand && matchQuery
-	})
+	const filtered = (() => {
+		const match = productsData.filter(p => {
+			const matchBrand = brand === 'All' || p.brand === brand
+			const matchQuery = p.name.toLowerCase().includes(query.toLowerCase())
+			return matchBrand && matchQuery
+		})
+		const seen = new Set()
+		return match.filter(p => {
+			const key = p.id ?? `${p.brand}::${p.name}`
+			if (seen.has(key)) return false
+			seen.add(key)
+			return true
+		})
+	})()
 
 	return (
 		<div
@@ -37,7 +47,6 @@ export default function App() {
 				boxSizing: 'border-box'
 			}}
 		>
-			{/* full-width header wrapper — flex area that spans the viewport */}
 			<div
 				style={{
 					width: '100%',
@@ -68,7 +77,14 @@ export default function App() {
 					boxSizing: 'border-box'
 				}}
 			>
+
 				<Banner brands={topBrands} />
+
+				<LogoFeature
+					brands={brands.filter(b => b !== 'All')}
+					active={brand}
+					onSelect={b => setBrand(prev => (prev === b ? 'All' : b))}
+				/>
 
 				<main className="container">
 					<h2
