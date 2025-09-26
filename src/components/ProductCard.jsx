@@ -1,31 +1,66 @@
 import React from 'react'
-import { useCart } from '../context/CartContext'
 
-export default function ProductCard({ product }) {
-  const { add } = useCart()
+export default function ProductCard({ product, onView = () => {} }) {
+	return (
+		<div
+			className="product-card"
+			style={{
+				background: '#fff',
+				borderRadius: 8,
+				padding: 12,
+				boxSizing: 'border-box',
+				boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+			}}
+		>
+			{/* Image (clickable) */}
+			<div
+				role="button"
+				tabIndex={0}
+				onClick={() => onView(product)}
+				onKeyDown={e => {
+					if (e.key === 'Enter' || e.key === ' ') {
+						e.preventDefault()
+						onView(product)
+					}
+				}}
+				style={{ cursor: 'pointer', overflow: 'hidden', borderRadius: 6, marginBottom: 8 }}
+				aria-label={`View details for ${product.name}`}
+			>
+				<img
+					src={product.image}
+					alt={product.name}
+					style={{ width: '100%', height: 180, objectFit: 'cover', display: 'block' }}
+				/>
+			</div>
+			
+			{/* Title */}
+			<h3 style={{ marginTop: 0, marginBottom: 6, fontSize: 16 }}>{product.name}</h3>
 
-  const onAdd = () => add({ id: product.id, name: product.name, price: product.price, image: product.image })
-  const onBuy = () => {
-    onAdd()
-    setTimeout(() => {
-      alert(`Purchased ${product.name}. Thank you!`)
-    }, 50)
-  }
+			{/* Price / Brand / Details */}
+			<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
+				<div style={{ color: '#6b7280', fontSize: 14 }}>
+					{product.brand} • ${product.price}
+				</div>
 
-  return (
-    <article className="bg-white rounded-lg overflow-hidden card-shadow flex flex-col">
-      <img className="w-full h-48 object-cover" src={product.image} alt={product.name} />
-      <div className="p-4 flex-1 flex flex-col">
-        <h3 className="text-lg font-medium">{product.name}</h3>
-        <p className="text-sm text-gray-500">{product.brand}</p>
-        <div className="mt-auto flex items-center justify-between">
-          <div className="text-blue-600 font-semibold">${product.price.toLocaleString()}</div>
-          <div className="flex gap-2">
-            <button className="px-3 py-1 border rounded-md text-sm" onClick={onAdd}>Add</button>
-            <button className="px-3 py-1 bg-blue-600 text-white rounded-md text-sm" onClick={onBuy}>Buy</button>
-          </div>
-        </div>
-      </div>
-    </article>
-  )
+				<button
+					onClick={e => {
+						e.stopPropagation()
+						onView(product)
+					}}
+					style={{
+						padding: '6px 10px',
+						border: 'none',
+						borderRadius: 6,
+						background: '#111827',
+						color: '#fff',
+						cursor: 'pointer',
+						fontSize: 14,
+					}}
+					aria-label={`View details for ${product.name}`}
+				>
+					Details
+				</button>
+			</div>
+		</div>
+	)
 }

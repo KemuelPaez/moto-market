@@ -3,6 +3,7 @@ import Header from './components/Header'
 import Banner from './components/Banner'
 import LogoFeature from './components/LogoFeature'
 import ProductList from './components/ProductList'
+import ProductDetails from './components/ProductDetails'
 import Cart from './components/Cart'
 import productsData from './data/products'
 import './index.css'
@@ -11,6 +12,73 @@ export default function App() {
 	const [query, setQuery] = useState('')
 	const [brand, setBrand] = useState('All')
 	const [viewCart, setViewCart] = useState(false)
+	const [selectedProduct, setSelectedProduct] = useState(null)
+
+	const [cart, setCart] = useState([])
+
+	const getKey = product => (product?.id ?? `${product?.brand}::${product?.name}`)
+
+	const addToCart = product => {
+		if (!product) return
+		setCart(prev => {
+			const copy = prev.slice()
+			const key = getKey(product)
+			const idx = copy.findIndex(i => getKey(i) === key)
+			if (idx >= 0) {
+				const item = { ...copy[idx], qty: (copy[idx].qty || 1) + 1 }
+				copy[idx] = item
+			} else {
+				copy.push({ ...product, qty: 1 })
+			}
+			return copy
+		})
+	}
+
+	// remove item by id or product object
+	const removeFromCart = identifier => {
+		setCart(prev =>
+			prev.filter(i => {
+				const k = getKey(i)
+				if (typeof identifier === 'string') return k !== identifier
+				return k !== getKey(identifier)
+			})
+		)
+	}
+
+	// update quantity (if qty <= 0 remove)
+	const updateCartQty = (identifier, qty) => {
+		setCart(prev =>
+			prev
+				.map(i => {
+					const k = getKey(i)
+					const match = typeof identifier === 'string' ? k === identifier : k === getKey(identifier)
+					if (!match) return i
+					return { ...i, qty: qty }
+				})
+				.filter(i => (i.qty ?? 0) > 0)
+		)
+	}
+
+	// buy now => add to cart and open cart
+	const buyNow = product => {
+		addToCart(product)
+		setViewCart(true)
+	}
+
+	const handleCheckout = () => {
+		if (!cart || cart.length === 0) {
+			// nothing to checkout — just close
+			setViewCart(false)
+			return
+		}
+		// simulate checkout
+		const orderSummary = cart.map(i => `${i.name} x${i.qty || 1}`).join('\n')
+		// simple confirmation (replace with real flow later)
+		window.alert(`Order placed:\n\n${orderSummary}\n\nThank you!`)
+		// clear cart and close cart panel
+		setCart([])
+		setViewCart(false)
+	}
 
 	const brands = ['All', ...Array.from(new Set(productsData.map(p => p.brand)))]
 
@@ -39,6 +107,9 @@ export default function App() {
 		})
 	})()
 
+	// compute cart item count (sum of quantities)
+	const cartCount = cart.reduce((s, it) => s + (it.qty || 0), 0)
+
 	return (
 		<div
 			className="app-root"
@@ -58,6 +129,7 @@ export default function App() {
 					background: '#94a3b8 ',
 				}}
 			>
+				{/* pass cartCount so header badge updates */}
 				<Header
 					brands={brands}
 					brand={brand}
@@ -65,6 +137,7 @@ export default function App() {
 					query={query}
 					onQuery={setQuery}
 					onToggleCart={() => setViewCart(v => !v)}
+					cartCount={cartCount}        // NEW
 				/>
 			</div>
 
@@ -98,11 +171,37 @@ export default function App() {
 					>
 						Featured Motorcycles
 					</h2>
-					<ProductList products={filtered} />
+					<ProductList
+						products={filtered}
+						onViewProduct={setSelectedProduct}
+						// removed: onAdd / onBuy from ProductList — ProductCard no longer exposes those
+					/>
 				</main>
 			</div>
 
-			<Cart open={viewCart} onClose={() => setViewCart(false)} />
+			<Cart
+				open={viewCart}
+				onClose={() => setViewCart(false)}
+				items={cart}                 // current cart items
+				onRemoveItem={removeFromCart} // remove handler
+				onUpdateQty={updateCartQty}   // qty update handler
+				onCheckout={handleCheckout}    // added prop
+			/>
+
+			<ProductDetails
+				product={selectedProduct}
+				onClose={() => setSelectedProduct(null)}
+				onAdd={p => {
+					addToCart(p)
+				}}
+				// changed: add product, open cart and close details so cart shows the added item
+				onBuy={p => {
+					addToCart(p)
+					setViewCart(true)
+					setSelectedProduct(null)
+				}}
+			/>
 		</div>
 	)
 }
+
