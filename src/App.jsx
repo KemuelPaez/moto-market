@@ -6,6 +6,7 @@ import ProductList from './components/ProductList'
 import ProductDetails from './components/ProductDetails'
 import Cart from './components/Cart'
 import Footer from './components/Footer'
+import BrandPage from './components/BrandPage'
 import productsData from './data/products'
 import './index.css'
 
@@ -16,6 +17,8 @@ export default function App() {
 	const [selectedProduct, setSelectedProduct] = useState(null)
 
 	const [cart, setCart] = useState([])
+
+	const [selectedBrandRoute, setSelectedBrandRoute] = useState(null)
 
 	const getKey = product => (product?.id ?? `${product?.brand}::${product?.name}`)
 
@@ -81,7 +84,56 @@ export default function App() {
 		setViewCart(false)
 	}
 
-	const brands = ['All', ...Array.from(new Set(productsData.map(p => p.brand)))]
+	// simulate fetchProducts for future backend (filters, sort, pagination)
+	const fetchProducts = async ({ brand: fBrand = null, category = 'All', sort = 'popular', page = 1, pageSize = 6, query: q = '' } = {}) => {
+		// demo category mapping (adjust to real backend later)
+		const categoryMap = {
+			Honda: 'Bigbikes',
+			Kawasaki: 'Bigbikes',
+			Yamaha: 'Scooter',
+			Triumph: 'Classic',
+			Ducati: 'Bigbikes',
+			BMW: 'Bigbikes',
+			Suzuki: 'Bigbikes',
+			KTM: 'Bigbikes'
+		}
+
+		await new Promise(r => setTimeout(r, 450))
+
+		let items = productsData.slice()
+
+		// brand filter
+		if (fBrand) items = items.filter(p => p.brand === fBrand)
+
+		// category filter (map products via categoryMap)
+		if (category && category !== 'All') {
+			items = items.filter(p => (categoryMap[p.brand] || 'Uncategorized') === category)
+		}
+
+		// simple query match
+		if (q && q.trim()) {
+			const t = q.toLowerCase()
+			items = items.filter(p => p.name.toLowerCase().includes(t) || (p.shortDescription || '').toLowerCase().includes(t))
+		}
+
+		// sorting
+		if (sort === 'price') {
+			items = items.sort((a, b) => (a.price || 0) - (b.price || 0))
+		} else if (sort === 'latest') {
+			// try to extract numeric suffix from id, fallback to keep order
+			items = items.sort((a, b) => {
+				const na = parseInt((a.id || '').match(/\d+$/)?.[0] || '0', 10)
+				const nb = parseInt((b.id || '').match(/\d+$/)?.[0] || '0', 10)
+				return nb - na
+			})
+		}
+
+		const total = items.length
+		const start = (page - 1) * pageSize
+		const paged = items.slice(start, start + pageSize)
+
+		return { items: paged, total }
+	}
 
 	// compute top brands by frequency
 	const brandCounts = productsData.reduce((acc, p) => {
@@ -92,6 +144,8 @@ export default function App() {
 		.sort((a, b) => b[1] - a[1])
 		.slice(0, 5)
 		.map(([name]) => name)
+
+	const brands = ['All', ...Array.from(new Set(productsData.map(p => p.brand)))]
 
 	const filtered = (() => {
 		const match = productsData.filter(p => {
@@ -110,6 +164,12 @@ export default function App() {
 
 	// compute cart item count (sum of quantities)
 	const cartCount = cart.reduce((s, it) => s + (it.qty || 0), 0)
+
+	const navigateToBrand = b => {
+		setSelectedBrandRoute(b)
+		setSelectedProduct(null)
+	}
+	const goBackFromBrand = () => setSelectedBrandRoute(null)
 
 	return (
 		<div
@@ -157,26 +217,35 @@ export default function App() {
 				<LogoFeature
 					brands={brands.filter(b => b !== 'All')}
 					active={brand}
-					onSelect={b => setBrand(prev => (prev === b ? 'All' : b))}
+					onSelect={navigateToBrand}
 				/>
 
-				<main className="container">
-					<h2
-						className="section-title"
-						style={{
-							marginBottom: 16,
-							fontSize: 24,
-							fontWeight: '600',
-							color: '#333'
-						}}
-					>
-						Featured Motorcycles
-					</h2>
-					<ProductList
-						products={filtered}
+				{selectedBrandRoute ? (
+					<BrandPage
+						brand={selectedBrandRoute}
+						fetchProducts={fetchProducts}
+						onBack={goBackFromBrand}
 						onViewProduct={setSelectedProduct}
 					/>
-				</main>
+				) : (
+					<main className="container">
+						<h2
+							className="section-title"
+							style={{
+								marginBottom: 16,
+								fontSize: 24,
+								fontWeight: '600',
+								color: '#333'
+							}}
+						>
+							Featured Motorcycles
+						</h2>
+						<ProductList
+							products={filtered}
+							onViewProduct={setSelectedProduct}
+						/>
+					</main>
+				)}
 			</div>
 
 			<Cart
