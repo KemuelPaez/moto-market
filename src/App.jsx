@@ -179,17 +179,7 @@ export default function App() {
 				boxSizing: 'border-box'
 			}}
 		>
-			<div
-				style={{
-					width: '100%',
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'space-between',
-					// padding: '',
-					boxSizing: 'border-box',
-					background: '#94a3b8 ',
-				}}
-			>
+			<div className="w-full flex items-center justify-between box-border bg-secondary">
 				{/* pass cartCount so header badge updates */}
 				<Header
 					brands={brands}
@@ -229,15 +219,7 @@ export default function App() {
 					/>
 				) : (
 					<main className="container">
-						<h2
-							className="section-title"
-							style={{
-								marginBottom: 16,
-								fontSize: 24,
-								fontWeight: '600',
-								color: '#333'
-							}}
-						>
+						<h2 className="section-title mb-4 text-2xl font-semibold text-text">
 							Featured Motorcycles
 						</h2>
 						<ProductList
@@ -270,7 +252,36 @@ export default function App() {
 				}}
 			/>
 
+			{/* Floating Cart Icon */}
+			<button
+				className="fixed bottom-4 right-4 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary z-50 transition-colors"
+				onClick={() => setViewCart(true)}
+				aria-label="Open cart"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					strokeWidth="2"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				>
+					<circle cx="9" cy="21" r="1"></circle>
+					<circle cx="20" cy="21" r="1"></circle>
+					<path d="m1 1 4 4h15l-1 7H6"></path>
+				</svg>
+				{cartCount > 0 && (
+					<span className="absolute -top-2 -right-2 bg-accent text-white text-xs rounded-full px-1 py-0.5 min-w-[18px] text-center font-semibold">
+						{cartCount}
+					</span>
+				)}
+			</button>
+
 			<Footer />
+
 		</div>
 	)
 }

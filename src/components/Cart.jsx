@@ -17,71 +17,55 @@ export default function Cart({
 		<div
 			aria-modal="true"
 			role="dialog"
-			style={{
-				position: 'fixed',
-				inset: 0,
-				background: 'rgba(0,0,0,0.4)',
-				display: 'flex',
-				justifyContent: 'flex-end',
-				zIndex: 9999,
-				padding: 16,
-				boxSizing: 'border-box'
-			}}
+			className="fixed inset-0 bg-black bg-opacity-40 flex justify-end z-50 p-16 box-border"
 			onClick={onClose}
 		>
 			{/* panel */}
 			<div
 				onClick={e => e.stopPropagation()}
-				style={{
-					width: 360,
-					maxHeight: '100%',
-					background: '#fff',
-					borderRadius: 8,
-					overflow: 'auto',
-					padding: 16,
-					boxSizing: 'border-box',
-					display: 'flex',
-					flexDirection: 'column',
-					gap: 12
+				className="bg-background rounded-lg overflow-auto p-4 box-border flex flex-col gap-3"
+				style={{ 
+					width: '360px',
+					maxHeight: '100%' 
 				}}
 			>
 				{/* header */}
-				<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-					<h3 style={{ margin: 0 }}>Your Cart</h3>
-					<button onClick={onClose} aria-label="Close" style={{ border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 20 }}>×</button>
+				<div className="flex justify-between items-center">
+					<h3 className="m-0">Your Cart</h3>
+					<button onClick={onClose} aria-label="Close" className="border-none bg-transparent cursor-pointer text-xl">×</button>
 				</div>
 
 				{/* empty state */}
-				{!hasItems && <div style={{ color: '#666' }}>Cart is empty.</div>}
+				{!hasItems && <div className="text-secondary">Cart is empty.</div>}
 
 				{/* items */}
 				{items.map(item => {
 					const key = item.id ?? `${item.brand}::${item.name}`
 					return (
-						<div key={key} style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-							<img src={item.image} alt={item.name} style={{ width: 64, height: 48, objectFit: 'cover', borderRadius: 4 }} />
-							<div style={{ flex: 1 }}>
-								<div style={{ fontWeight: 600 }}>{item.name}</div>
-								<div style={{ color: '#666', fontSize: 13 }}>{item.brand} • ${item.price}</div>
-								<div style={{ marginTop: 8, display: 'flex', gap: 8, alignItems: 'center' }}>
+						<div key={key} className="flex gap-3 items-center">
+							<img src={item.image} alt={item.name} className="w-16 h-12 object-cover rounded" />
+							<div className="flex-1">
+								<div className="font-semibold">{item.name}</div>
+								<div className="text-secondary text-sm">{item.brand} • ${item.price}</div>
+								<div className="mt-2 flex gap-2 items-center">
 									<button
 										onClick={() => onUpdateQty(key, Math.max(0, (item.qty || 1) - 1))}
-										style={{ padding: '4px 8px' }}
+										className="px-2 py-1"
 										aria-label={`Decrease quantity of ${item.name}`}
 									>
 										−
 									</button>
-									<div style={{ minWidth: 24, textAlign: 'center' }}>{item.qty || 1}</div>
+									<div className="min-w-6 text-center">{item.qty || 1}</div>
 									<button
 										onClick={() => onUpdateQty(key, (item.qty || 1) + 1)}
-										style={{ padding: '4px 8px' }}
+										className="px-2 py-1"
 										aria-label={`Increase quantity of ${item.name}`}
 									>
 										+
 									</button>
 									<button
 										onClick={() => onRemoveItem(key)}
-										style={{ marginLeft: 'auto', padding: '4px 8px', color: '#b91c1c', border: '1px solid #fee2e2', background: '#fff' }}
+										className="ml-auto px-2 py-1 text-red-500 border border-red-200 bg-background"
 									>
 										Remove
 									</button>
@@ -92,23 +76,15 @@ export default function Cart({
 				})}
 
 				{/* footer */}
-				<div style={{ marginTop: 'auto', borderTop: '1px solid #eee', paddingTop: 12 }}>
-					<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-						<div style={{ color: '#666' }}>Total</div>
-						<div style={{ fontWeight: 700 }}>${total.toFixed(2)}</div>
+				<div className="mt-auto border-t border-gray-300 pt-3">
+					<div className="flex justify-between mb-2">
+						<div className="text-secondary">Total</div>
+						<div className="font-bold">${total.toFixed(2)}</div>
 					</div>
 					<button
 						onClick={() => onCheckout()}
 						disabled={!hasItems}
-						style={{
-							width: '100%',
-							padding: '10px 12px',
-							background: hasItems ? '#111827' : '#e5e7eb',
-							color: hasItems ? '#fff' : '#9ca3af',
-							borderRadius: 6,
-							border: 'none',
-							cursor: hasItems ? 'pointer' : 'not-allowed'
-						}}
+						className={`w-full p-2.5 rounded-md border-none ${hasItems ? 'bg-text text-white cursor-pointer' : 'bg-gray-300 text-gray-400 cursor-not-allowed'}`}
 					>
 						Checkout
 					</button>

@@ -2,15 +2,7 @@ import React from 'react'
 
 export default function Footer() {
 	return (
-		<footer
-			style={{
-				background: '#0f172a',
-				color: '#e6eef8',
-				padding: '32px 16px',
-				boxSizing: 'border-box',
-				marginTop: 32
-			}}
-		>
+		<footer className="bg-secondary text-white p-8 mt-8 box-border">
 			<div
 				style={{
 					maxWidth: 1200,
@@ -23,64 +15,64 @@ export default function Footer() {
 			>
 				{/* Customer Service */}
 				<div>
-					<h4 style={{ margin: 0, marginBottom: 8, fontSize: 16, fontWeight: 700 }}>Customer Service</h4>
-					<ul style={{ listStyle: 'none', padding: 0, margin: 0, marginTop: 8 }}>
-						<li style={{ marginBottom: 6 }}>
-							<a href="#" style={{ color: '#cfe8ff', textDecoration: 'none' }}>Help Center</a>
+					<h4 className="mb-2 text-lg font-bold">Customer Service</h4>
+					<ul className="list-none p-0 m-0 mt-2">
+						<li className="mb-1">
+							<a href="#" className="text-accent no-underline">Help Center</a>
 						</li>
-						<li style={{ marginBottom: 6 }}>
-							<a href="#" style={{ color: '#cfe8ff', textDecoration: 'none' }}>Contact Us</a>
+						<li className="mb-1">
+							<a href="#" className="text-accent no-underline">Contact Us</a>
 						</li>
-						<li style={{ marginBottom: 6 }}>
-							<a href="#" style={{ color: '#cfe8ff', textDecoration: 'none' }}>Refund Policy</a>
+						<li className="mb-1">
+							<a href="#" className="text-accent no-underline">Refund Policy</a>
 						</li>
-						<li style={{ marginBottom: 6 }}>
-							<a href="#" style={{ color: '#cfe8ff', textDecoration: 'none' }}>Shipping Info</a>
+						<li className="mb-1">
+							<a href="#" className="text-accent no-underline">Shipping Info</a>
 						</li>
 					</ul>
 				</div>
 
 				{/* About */}
 				<div>
-					<h4 style={{ margin: 0, marginBottom: 8, fontSize: 16, fontWeight: 700 }}>About</h4>
-					<ul style={{ listStyle: 'none', padding: 0, margin: 0, marginTop: 8 }}>
-						<li style={{ marginBottom: 6 }}>
-							<a href="#" style={{ color: '#cfe8ff', textDecoration: 'none' }}>About Us</a>
+					<h4 className="mb-2 text-lg font-bold">About</h4>
+					<ul className="list-none p-0 m-0 mt-2">
+						<li className="mb-1">
+							<a href="#" className="text-accent no-underline">About Us</a>
 						</li>
-						<li style={{ marginBottom: 6 }}>
-							<a href="#" style={{ color: '#cfe8ff', textDecoration: 'none' }}>Careers</a>
+						<li className="mb-1">
+							<a href="#" className="text-accent no-underline">Careers</a>
 						</li>
-						<li style={{ marginBottom: 6 }}>
-							<a href="#" style={{ color: '#cfe8ff', textDecoration: 'none' }}>Socials</a>
+						<li className="mb-1">
+							<a href="#" className="text-accent no-underline">Socials</a>
 						</li>
-						<li style={{ marginBottom: 6 }}>
-							<a href="#" style={{ color: '#cfe8ff', textDecoration: 'none' }}>Policies</a>
+						<li className="mb-1">
+							<a href="#" className="text-accent no-underline">Policies</a>
 						</li>
 					</ul>
 				</div>
 
 				{/* Payment */}
 				<div>
-					<h4 style={{ margin: 0, marginBottom: 8, fontSize: 16, fontWeight: 700 }}>Payment</h4>
-					<ul style={{ listStyle: 'none', padding: 0, margin: 0, marginTop: 8 }}>
-						<li style={{ marginBottom: 6 }}>
-							<span style={{ color: '#cfe8ff' }}>PayPal</span>
+					<h4 className="mb-2 text-lg font-bold">Payment</h4>
+					<ul className="list-none p-0 m-0 mt-2">
+						<li className="mb-1">
+							<span className="text-accent">PayPal</span>
 						</li>
-						<li style={{ marginBottom: 6 }}>
-							<span style={{ color: '#cfe8ff' }}>Credit / Debit Card</span>
+						<li className="mb-1">
+							<span className="text-accent">Credit / Debit Card</span>
 						</li>
-						<li style={{ marginBottom: 6 }}>
-							<span style={{ color: '#cfe8ff' }}>Apple Pay</span>
+						<li className="mb-1">
+							<span className="text-accent">Apple Pay</span>
 						</li>
-						<li style={{ marginBottom: 6 }}>
-							<span style={{ color: '#cfe8ff' }}>Google Pay</span>
+						<li className="mb-1">
+							<span className="text-accent">Google Pay</span>
 						</li>
 					</ul>
 				</div>
 			</div>
 
 			{/* bottom note */}
-			<div style={{ maxWidth: 1200, margin: '18px auto 0', color: '#94a3b8', fontSize: 13, textAlign: 'center' }}>
+			<div className="max-w-6xl mx-auto mt-4 text-white text-sm text-center">
 				© {new Date().getFullYear()} Moto Store — All rights reserved.
 			</div>
 		</footer>

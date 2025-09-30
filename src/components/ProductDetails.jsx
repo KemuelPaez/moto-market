@@ -31,71 +31,49 @@ export default function ProductDetails({
 	return (
 		<div
 			onClick={onClose}
-			style={{
-				position: 'fixed',
-				inset: 0,
-				background: 'rgba(0,0,0,0.6)',
-				display: 'flex',
-				alignItems: 'center',
-				justifyContent: 'center',
-				zIndex: 9999,
-				padding: 20,
-				boxSizing: 'border-box'
-			}}
+			className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-5 box-border"
 			aria-modal="true"
 			role="dialog"
 		>
 			<div
 				onClick={e => e.stopPropagation()}
-				style={{
-					width: 'min(1000px, 96%)',
-					maxHeight: '90vh',
-					background: '#fff',
-					borderRadius: 8,
-					overflow: 'auto',
-					padding: 20,
-					boxSizing: 'border-box',
-					position: 'relative',
-					display: 'flex',
-					gap: 20,
-					alignItems: 'flex-start'
-				}}
+				className="w-full max-w-4xl max-h-90vh bg-background rounded-lg overflow-auto p-5 box-border relative flex gap-5 items-start"
 			>
 				{/* image / preview */}
 				<div style={{ flex: '0 0 420px', maxWidth: 420 }}>
 					<img
 						src={product.image || product.img || product.photo || ''}
 						alt={product.name}
-						style={{ width: '100%', height: 300, objectFit: 'cover', borderRadius: 6, background: '#f3f4f6' }}
+						className="w-full h-75 object-cover rounded-md bg-background"
 					/>
 				</div>
 
 				{/* details */}
-				<div style={{ flex: '1 1 auto' }}>
-					<h3 style={{ margin: 0, fontSize: 22 }}>{product.name}</h3>
-					<p style={{ marginTop: 8, color: '#555' }}>
+				<div className="flex-1">
+					<h3 className="m-0 text-2xl text-text">{product.name}</h3>
+					<p className="mt-2 text-secondary">
 						{product.shortDescription ?? product.description ?? 'No description available.'}
 					</p>
 
 					{/* quick info row */}
-					<div style={{ marginTop: 12, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+					<div className="mt-3 flex gap-3 flex-wrap">
 						{product.price != null && (
-							<div style={{ fontWeight: 700 }}>${product.price}</div>
+							<div className="font-bold">${product.price}</div>
 						)}
 						{product.brand && (
-							<div style={{ padding: '4px 8px', background: '#f1f5f9', borderRadius: 6 }}>{product.brand}</div>
+							<div className="px-2 py-1 bg-background rounded-md">{product.brand}</div>
 						)}
-						{product.year && <div style={{ padding: '4px 8px', background: '#f1f5f9', borderRadius: 6 }}>{product.year}</div>}
+						{product.year && <div className="px-2 py-1 bg-background rounded-md">{product.year}</div>}
 					</div>
 
 					{/* specifications */}
 					{Object.keys(specs).length > 0 && (
-						<section style={{ marginTop: 16 }}>
-							<h4 style={{ margin: '0 0 8px 0' }}>Specifications</h4>
-							<ul style={{ margin: 0, paddingLeft: 18, color: '#333' }}>
+						<section className="mt-4">
+							<h4 className="m-0 mb-2">Specifications</h4>
+							<ul className="m-0 pl-4.5 text-text">
 								{Object.entries(specs).map(([k, v]) => (
-									<li key={k} style={{ marginBottom: 6 }}>
-										<strong style={{ marginRight: 8 }}>{k}:</strong> {String(v)}
+									<li key={k} className="mb-1.5">
+										<strong className="mr-2">{k}:</strong> {String(v)}
 									</li>
 								))}
 							</ul>
@@ -104,7 +82,7 @@ export default function ProductDetails({
 
 					{/* fallback if no specs */}
 					{Object.keys(specs).length === 0 && (
-						<div style={{ marginTop: 16, color: '#666' }}>No specifications available.</div>
+						<div className="mt-4 text-secondary">No specifications available.</div>
 					)}
 				</div>
 
@@ -112,22 +90,14 @@ export default function ProductDetails({
 				<button
 					onClick={onClose}
 					aria-label="Close"
-					style={{
-						position: 'absolute',
-						top: 12,
-						right: 12,
-						border: 'none',
-						background: 'transparent',
-						fontSize: 20,
-						cursor: 'pointer'
-					}}
+					className="absolute top-3 right-3 border-none bg-transparent text-xl cursor-pointer"
 				>
 					×
 				</button>
 
 				{/* Add / Buy buttons with temporary confirmation */}
-				<div style={{ marginTop: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>
-					<div className="flex gap-2" style={{ alignItems: 'center' }}>
+				<div className="mt-auto flex gap-2 items-center">
+					<div className="flex gap-2 items-center">
 						<button
 							className="px-3 py-1 border rounded-md text-sm"
 							onClick={e => {
@@ -145,13 +115,13 @@ export default function ProductDetails({
 
 						{/* small inline confirmation */}
 						{added && (
-							<span style={{ marginLeft: 8, color: '#10b981', fontWeight: 600 }}>
+							<span className="ml-2 text-green-500 font-semibold">
 								Added ✓
 							</span>
 						)}
 
 						<button
-							className="px-3 py-1 bg-blue-600 text-white rounded-md text-sm"
+							className="px-3 py-1 bg-primary text-white rounded-md text-sm"
 							onClick={e => {
 								e.stopPropagation()
 								onBuy(product)

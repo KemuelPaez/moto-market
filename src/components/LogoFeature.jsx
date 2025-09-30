@@ -31,15 +31,7 @@ export default function LogoFeature({
 
 	return (
 		<div
-			style={{
-				display: 'flex',
-				gap: 12,
-				overflowX: 'auto',
-				padding: '16px 4px',
-				alignItems: 'center',
-				justifyContent: 'center',
-				WebkitOverflowScrolling: 'touch'
-			}}
+			className="flex gap-3 overflow-x-auto p-4 items-center justify-center overflow-scrolling-touch"
 			role="list"
 		>
 			{brands.map(b => {
@@ -49,29 +41,19 @@ export default function LogoFeature({
 						key={b}
 						onClick={() => onSelect(b)}
 						aria-pressed={isActive}
+						className={`flex-none ${isActive ? 'border-2 border-text bg-background' : 'border border-gray-300 bg-gray-50'} rounded-lg p-1.5 cursor-pointer flex items-center justify-center box-border`}
 						style={{
-							flex: '0 0 auto',
-							border: isActive ? '2px solid #111' : '1px solid rgba(0,0,0,0.1)',
-							borderRadius: 8,
-							padding: 6,
-							background: isActive ? '#fff' : '#f8fafc',
-							cursor: 'pointer',
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'center',
 							minWidth: imageWidth + 24,
-							height: imageHeight + 24,
-							boxSizing: 'border-box'
+							height: imageHeight + 24
 						}}
 					>
 						<img
 							src={placeholder(b)}
 							alt={b}
+							className="block object-contain"
 							style={{
 								width: imageWidth,
-								height: imageHeight,
-								objectFit: 'contain',
-								display: 'block'
+								height: imageHeight
 							}}
 						/>
 					</button>

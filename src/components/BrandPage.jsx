@@ -43,27 +43,21 @@ export default function BrandPage({ brand, fetchProducts, onBack = () => {}, onV
 	const hasMore = products.length < total
 
 	return (
-		<div style={{ marginTop: 8 }}>
-			<div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
+		<div className="mt-2">
+			<div className="flex items-center gap-3 mb-4 flex-wrap">
 				<button
 					onClick={onBack}
-					style={{
-						padding: '8px 10px',
-						borderRadius: 6,
-						border: '1px solid #e5e7eb',
-						background: '#fff',
-						cursor: 'pointer'
-					}}
+					className="px-2.5 py-2 rounded-md border border-gray-300 bg-background cursor-pointer"
 					aria-label="Back to main"
 				>
 					← Back
 				</button>
-				<h2 style={{ margin: 0, fontSize: 20 }}>{brand} Motorcycles</h2>
+				<h2 className="m-0 text-xl text-text">{brand} Motorcycles</h2>
 
 				{/* category filter */}
-				<div style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>
-					<label style={{ fontSize: 13, color: '#333' }}>Category</label>
-					<select value={category} onChange={e => setCategory(e.target.value)} style={{ padding: 6 }}>
+				<div className="ml-auto flex gap-2 items-center">
+					<label className="text-sm text-text">Category</label>
+					<select value={category} onChange={e => setCategory(e.target.value)} className="p-1.5">
 						<option value="All">All Categories</option>
 						<option value="Bigbikes">Bigbikes</option>
 						<option value="Underbone">Underbone</option>
@@ -71,8 +65,8 @@ export default function BrandPage({ brand, fetchProducts, onBack = () => {}, onV
 						<option value="Classic">Classic</option>
 					</select>
 
-					<label style={{ fontSize: 13, color: '#333', marginLeft: 12 }}>Sort</label>
-					<select value={sort} onChange={e => setSort(e.target.value)} style={{ padding: 6 }}>
+					<label className="text-sm text-text ml-3">Sort</label>
+					<select value={sort} onChange={e => setSort(e.target.value)} className="p-1.5">
 						<option value="popular">Popular</option>
 						<option value="latest">Latest</option>
 						<option value="price">Price</option>
@@ -81,17 +75,17 @@ export default function BrandPage({ brand, fetchProducts, onBack = () => {}, onV
 			</div>
 
 			{/* product list */}
-			{products.length === 0 && !loading && <div style={{ color: '#666' }}>No motorcycles found for {brand}.</div>}
+			{products.length === 0 && !loading && <div className="text-secondary">No motorcycles found for {brand}.</div>}
 
 			<ProductList products={products} onViewProduct={onViewProduct} />
 
 			{/* load more */}
-			{loading && <div style={{ marginTop: 12 }}>Loading …</div>}
+			{loading && <div className="mt-3">Loading …</div>}
 			{hasMore && !loading && (
-				<div style={{ marginTop: 12 }}>
+				<div className="mt-3">
 					<button
 						onClick={loadMore}
-						style={{ padding: '8px 12px', borderRadius: 6, border: '1px solid #e5e7eb', background: '#fff', cursor: 'pointer' }}
+						className="px-3 py-2 rounded-md border border-gray-300 bg-background cursor-pointer"
 					>
 						Load more
 					</button>

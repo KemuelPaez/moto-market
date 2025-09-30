@@ -82,32 +82,15 @@ export default function Banner({ brands = [] }) {
 
 	return (
 		<div
-			className="banner"
-			style={{
-				position: 'relative',
-				width: '100%',
-				borderRadius: 8,
-				overflow: 'hidden',
-				margin: '16px 0',
-				height: 300,
-				background: '#111'
-			}}
+			className="banner bg-black rounded-lg overflow-hidden m-4 h-72 relative"
 			aria-roledescription="carousel"
 		>
 			{/* slides viewport */}
-			<div
-				style={{
-					width: '100%',
-					height: '100%',
-					overflow: 'hidden'
-				}}
-			>
+			<div className="w-full h-full overflow-hidden">
 				{/* slides container: one slide per brand */}
 				<div
-					className="slides"
+					className="slides flex h-full"
 					style={{
-						display: 'flex',
-						height: '100%',
 						width: `${brands.length * 100}%`,
 						transform: `translateX(-${index * (100 / brands.length)}%)`,
 						transition: 'transform 600ms ease'
@@ -116,24 +99,16 @@ export default function Banner({ brands = [] }) {
 					{brands.map((b, i) => (
 						<div
 							key={b}
-							className="slide"
+							className="slide flex items-center justify-center h-full bg-black"
 							style={{
-								flex: `0 0 ${100 / brands.length}%`,
-								height: '100%',
-								display: 'flex',
-								alignItems: 'center',
-								justifyContent: 'center',
-								background: '#111'
+								flex: `0 0 ${100 / brands.length}%`
 							}}
 						>
 							<img
 								src={imageFor(b)}
 								alt={b}
+								className="w-full h-full object-contain transition-opacity duration-250"
 								style={{
-									width: '100%',
-									height: '100%',
-									objectFit: 'contain',
-									transition: 'opacity 250ms linear',
 									opacity: loaded[i] ? 1 : 0,
 									background: '#111'
 								}}
@@ -147,65 +122,26 @@ export default function Banner({ brands = [] }) {
 			<button
 				onClick={goPrev}
 				aria-label="Previous"
-				style={{
-					position: 'absolute',
-					top: '50%',
-					left: 8,
-					transform: 'translateY(-50%)',
-					background: 'rgba(0,0,0,0.5)',
-					color: '#fff',
-					border: 'none',
-					padding: '8px 10px',
-					borderRadius: 4,
-					cursor: 'pointer'
-				}}
+				className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white border-none p-2 rounded cursor-pointer"
 			>
 				‹
 			</button>
 			<button
 				onClick={goNext}
 				aria-label="Next"
-				style={{
-					position: 'absolute',
-					top: '50%',
-					right: 8,
-					transform: 'translateY(-50%)',
-					background: 'rgba(0,0,0,0.5)',
-					color: '#fff',
-					border: 'none',
-					padding: '8px 10px',
-					borderRadius: 4,
-					cursor: 'pointer'
-				}}
+				className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white border-none p-2 rounded cursor-pointer"
 			>
 				›
 			</button>
 
 			{/* dots */}
-			<div
-				style={{
-					position: 'absolute',
-					bottom: 8,
-					left: '50%',
-					transform: 'translateX(-50%)',
-					display: 'flex',
-					gap: 8
-				}}
-			>
+			<div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2">
 				{brands.map((b, i) => (
 					<button
 						key={b}
 						onClick={() => setIndex(i)}
 						aria-label={`Go to ${b}`}
-						style={{
-							width: 10,
-							height: 10,
-							borderRadius: '50%',
-							background: i === index ? '#fff' : 'rgba(255,255,255,0.5)',
-							border: 'none',
-							padding: 0,
-							cursor: 'pointer'
-						}}
+						className={`w-2.5 h-2.5 rounded-full border-none p-0 cursor-pointer ${i === index ? 'bg-white' : 'bg-white bg-opacity-50'}`}
 					/>
 				))}
 			</div>

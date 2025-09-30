@@ -2,16 +2,16 @@ import React from 'react'
 
 export default function ProductCard({ product, onView = () => {} }) {
 	return (
-		<div
-			className="product-card"
-			style={{
-				background: '#fff',
-				borderRadius: 8,
-				padding: 12,
-				boxSizing: 'border-box',
-				boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
-			}}
-		>
+			<div
+				className="product-card"
+				style={{
+					background: '#fff',
+					borderRadius: 8,
+					padding: 12,
+					boxSizing: 'border-box',
+					boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+				}}
+			>
 			{/* Image (clickable) */}
 			<div
 				role="button"
@@ -23,7 +23,7 @@ export default function ProductCard({ product, onView = () => {} }) {
 						onView(product)
 					}
 				}}
-				style={{ cursor: 'pointer', overflow: 'hidden', borderRadius: 6, marginBottom: 8 }}
+				className="cursor-pointer overflow-hidden rounded-md mb-2"
 				aria-label={`View details for ${product.name}`}
 			>
 				<img
@@ -32,13 +32,13 @@ export default function ProductCard({ product, onView = () => {} }) {
 					style={{ width: '100%', height: 180, objectFit: 'cover', display: 'block' }}
 				/>
 			</div>
-			
+
 			{/* Title */}
-			<h3 style={{ marginTop: 0, marginBottom: 6, fontSize: 16 }}>{product.name}</h3>
+			<h3 className="mt-0 mb-1.5 text-base text-text">{product.name}</h3>
 
 			{/* Price / Brand / Details */}
-			<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
-				<div style={{ color: '#6b7280', fontSize: 14 }}>
+			<div className="flex items-center justify-between mt-2">
+				<div className="text-secondary text-sm">
 					{product.brand} • ${product.price}
 				</div>
 
@@ -47,15 +47,7 @@ export default function ProductCard({ product, onView = () => {} }) {
 						e.stopPropagation()
 						onView(product)
 					}}
-					style={{
-						padding: '6px 10px',
-						border: 'none',
-						borderRadius: 6,
-						background: '#111827',
-						color: '#fff',
-						cursor: 'pointer',
-						fontSize: 14,
-					}}
+					className="px-2.5 py-1.5 border-none rounded-md bg-text text-white cursor-pointer text-sm hover:bg-text"
 					aria-label={`View details for ${product.name}`}
 				>
 					Details
