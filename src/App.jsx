@@ -5,6 +5,7 @@ import LogoFeature from './components/LogoFeature'
 import ProductList from './components/ProductList'
 import ProductDetails from './components/ProductDetails'
 import Cart from './components/Cart'
+import Footer from './components/Footer'
 import productsData from './data/products'
 import './index.css'
 
@@ -137,7 +138,7 @@ export default function App() {
 					query={query}
 					onQuery={setQuery}
 					onToggleCart={() => setViewCart(v => !v)}
-					cartCount={cartCount}        // NEW
+					cartCount={cartCount}
 				/>
 			</div>
 
@@ -174,7 +175,6 @@ export default function App() {
 					<ProductList
 						products={filtered}
 						onViewProduct={setSelectedProduct}
-						// removed: onAdd / onBuy from ProductList — ProductCard no longer exposes those
 					/>
 				</main>
 			</div>
@@ -182,10 +182,10 @@ export default function App() {
 			<Cart
 				open={viewCart}
 				onClose={() => setViewCart(false)}
-				items={cart}                 // current cart items
-				onRemoveItem={removeFromCart} // remove handler
-				onUpdateQty={updateCartQty}   // qty update handler
-				onCheckout={handleCheckout}    // added prop
+				items={cart}
+				onRemoveItem={removeFromCart}
+				onUpdateQty={updateCartQty}
+				onCheckout={handleCheckout}
 			/>
 
 			<ProductDetails
@@ -194,13 +194,14 @@ export default function App() {
 				onAdd={p => {
 					addToCart(p)
 				}}
-				// changed: add product, open cart and close details so cart shows the added item
 				onBuy={p => {
 					addToCart(p)
 					setViewCart(true)
 					setSelectedProduct(null)
 				}}
 			/>
+
+			<Footer />
 		</div>
 	)
 }
