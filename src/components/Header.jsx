@@ -7,7 +7,9 @@ export default function Header({
 	query,
 	onQuery,
 	onToggleCart,
-	cartCount = 0 
+	cartCount = 0,
+	theme = false,
+	onToggleTheme = () => {} 
 }) {
 	return (
 		<header className="w-full border-b shadow-sm">
@@ -15,7 +17,27 @@ export default function Header({
 			<div className="bg-secondary text-white text-sm py-2">
 				<div className="max-w-6xl mx-auto px-4 flex justify-between items-center">
 					<span>Follow our socials</span>
-					<div className="flex gap-4">
+					<div className="flex gap-4 items-center">
+						<button
+							onClick={onToggleTheme}
+							aria-pressed={!!theme}
+							aria-label="Toggle dark mode"
+							className="inline-flex items-center justify-center w-9 h-9 rounded-md bg-background/50 text-white hover:bg-background/70 focus:outline-none"
+						>
+							{theme ? (
+								/* sun icon when in dark mode (click to go light) */
+								<svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+									<path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+									<circle cx="12" cy="12" r="3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+								</svg>
+							) : (
+								/* moon icon when in light mode (click to go dark) */
+								<svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+									<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+								</svg>
+							)}
+						</button>
+
 						<select
 							className="bg-secondary text-white text-sm border-none focus:ring-2 focus:ring-primary rounded-md px-2 py-1"
 							defaultValue="en"

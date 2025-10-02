@@ -4,3 +4,93 @@
 
 /* small helper */
 .card-shadow { box-shadow: 0 6px 20px rgba(16,24,40,0.06); }
+
+/* Theme variables (light by default) */
+:root {
+  /* page / surface */
+  --color-background: #f3f6f8;        /* soft off-white, not stark white */
+  --color-surface: #ffffff;           /* card/surface (slightly bright but contrasted by background) */
+
+  /* text */
+  --color-text: #0b2230;              /* deep blue/teal for high contrast with background */
+  --color-muted: #475569;             /* accessible muted text */
+
+  /* accents */
+  --color-primary: #0f766e;           /* accessible teal for primary actions */
+  --color-accent: #b91c1c;            /* deeper red for badges/alerts */
+  --color-secondary: #64748b;         /* calm slate for secondary bars */
+
+  /* UI */
+  --shadow-color: rgba(2,6,23,0.06);
+  --focus-ring: rgba(15,118,110,0.16); /* subtle focus ring using primary color */
+}
+
+/* Dark theme overrides (applied when .dark is present on <html>) */
+.dark {
+  --color-background: #071025;
+  --color-surface: #071826;
+  --color-text: #e6eef8;
+  --color-muted: #94a3b8;
+  --color-primary: #06b6d4;
+  --color-accent: #fb7185;
+  --color-secondary: #0b1220;
+  --shadow-color: rgba(0,0,0,0.6);
+  --focus-ring: rgba(6,182,212,0.12);
+}
+
+/* Base element styles so variables apply broadly */
+html, body, .app-root {
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+/* Focus ring helper used by interactive elements */
+:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--focus-ring);
+  border-radius: 6px;
+}
+
+/* Map project-specific utility classnames to variables */
+.bg-background { background-color: var(--color-background) !important; }
+.bg-surface { background-color: var(--color-surface) !important; }
+.text-text { color: var(--color-text) !important; }
+.text-secondary { color: var(--color-muted) !important; }
+.bg-primary { background-color: var(--color-primary) !important; }
+.bg-accent { background-color: var(--color-accent) !important; }
+.bg-secondary { background-color: var(--color-secondary) !important; }
+
+/* Badge / accent text */
+.text-accent { color: var(--color-accent) !important; }
+
+/* Buttons and interactive elements helpers */
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+  box-shadow: 0 6px 18px var(--shadow-color);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text);
+}
+
+/* Surface/card style */
+.surface {
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+/* Utility: subtle borders that adapt */
+.border-adaptive {
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Ensure modal/backdrop uses theme */
+.modal-backdrop {
+  background: rgba(2,6,23,0.6);
+}
+
+/* Small helpers used in components */
+.text-muted { color: var(--color-muted) !important; }
+.rounded-lg { border-radius: 0.5rem; }

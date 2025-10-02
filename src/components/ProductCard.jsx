@@ -2,16 +2,12 @@ import React from 'react'
 
 export default function ProductCard({ product, onView = () => {} }) {
 	return (
-			<div
-				className="product-card"
-				style={{
-					background: '#fff',
-					borderRadius: 8,
-					padding: 12,
-					boxSizing: 'border-box',
-					boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
-				}}
-			>
+		<div
+			className="product-card bg-surface rounded-md p-3 box-border shadow-sm"
+			style={{
+				boxSizing: 'border-box',
+			}}
+		>
 			{/* Image (clickable) */}
 			<div
 				role="button"
@@ -29,7 +25,7 @@ export default function ProductCard({ product, onView = () => {} }) {
 				<img
 					src={product.image}
 					alt={product.name}
-					style={{ width: '100%', height: 180, objectFit: 'cover', display: 'block' }}
+					className="w-full h-44 object-cover block rounded"
 				/>
 			</div>
 
@@ -47,7 +43,7 @@ export default function ProductCard({ product, onView = () => {} }) {
 						e.stopPropagation()
 						onView(product)
 					}}
-					className="px-2.5 py-1.5 border-none rounded-md bg-text text-white cursor-pointer text-sm hover:bg-text"
+					className="px-2.5 py-1.5 rounded-md bg-primary text-white text-sm hover:opacity-95"
 					aria-label={`View details for ${product.name}`}
 				>
 					Details

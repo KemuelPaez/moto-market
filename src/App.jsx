@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from './components/Header'
 import Banner from './components/Banner'
 import LogoFeature from './components/LogoFeature'
@@ -19,6 +19,21 @@ export default function App() {
 	const [cart, setCart] = useState([])
 
 	const [selectedBrandRoute, setSelectedBrandRoute] = useState(null)
+
+	const [dark, setDark] = useState(() => {
+		try {
+			return localStorage.getItem('theme') === 'dark'
+		} catch {
+			return false
+		}
+	})
+	useEffect(() => {
+		try {
+			if (dark) document.documentElement.classList.add('dark')
+			else document.documentElement.classList.remove('dark')
+			localStorage.setItem('theme', dark ? 'dark' : 'light')
+		} catch {}
+	}, [dark])
 
 	const getKey = product => (product?.id ?? `${product?.brand}::${product?.name}`)
 
@@ -180,7 +195,6 @@ export default function App() {
 			}}
 		>
 			<div className="w-full flex items-center justify-between box-border bg-secondary">
-				{/* pass cartCount so header badge updates */}
 				<Header
 					brands={brands}
 					brand={brand}
@@ -189,6 +203,8 @@ export default function App() {
 					onQuery={setQuery}
 					onToggleCart={() => setViewCart(v => !v)}
 					cartCount={cartCount}
+					theme={dark}
+					onToggleTheme={() => setDark(d => !d)}
 				/>
 			</div>
 
