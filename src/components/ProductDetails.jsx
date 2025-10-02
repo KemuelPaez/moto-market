@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
+import ReactImageMagnify from 'react-image-magnify'
 
 export default function ProductDetails({
 	product,
@@ -42,21 +43,41 @@ export default function ProductDetails({
 			{/* panel */}
 			<div
 				onClick={e => e.stopPropagation()}
-				className="relative w-full max-w-5xl bg-background rounded-2xl overflow-hidden shadow-2xl grid grid-cols-1 md:grid-cols-12 gap-0"
+				className="relative w-full max-w-5xl bg-background rounded-2xl overflow-visible shadow-2xl grid grid-cols-1 md:grid-cols-12 gap-0"
 				aria-label={`${product.name} details`}
 			>
-				{/* Left: image + color flares */}
+				{/* image + color flares */}
 				<div className="md:col-span-5 relative bg-gradient-to-br from-primary/10 to-accent/5 flex items-center justify-center">
-					{/* decorative flares */}
 					<div className="absolute -left-16 -top-10 w-44 h-44 rounded-full bg-gradient-to-tr from-primary to-transparent opacity-40 blur-3xl pointer-events-none" />
 					<div className="absolute -right-16 -bottom-12 w-56 h-56 rounded-full bg-gradient-to-br from-accent/70 to-transparent opacity-30 blur-3xl pointer-events-none" />
 
-					{/* image container */}
+					{/* image container - react-image-magnify */}
 					<div className="relative w-full h-72 md:h-[420px] flex items-center justify-center p-6 box-border">
-						<img
-							src={product.image || product.img || product.photo || ''}
-							alt={product.name}
-							className="max-w-full max-h-full object-cover rounded-xl shadow-lg"
+						<ReactImageMagnify
+							{...{
+								smallImage: {
+									alt: product.name,
+									isFluidWidth: true,
+									src: product.image || product.img || product.photo || ''
+								},
+								largeImage: {
+									src: product.image || product.img || product.photo || '',
+									width: '100%',
+									height: '100%'
+								},
+								enlargedImagePosition: 'beside',
+								enlargedImageContainerStyle: {
+									zIndex: 11000,
+									boxShadow: '0 12px 40px rgba(2,6,23,0.5)',
+									borderRadius: 12,
+									overflow: 'hidden'
+								},
+								enlargedImageContainerDimensions: { width: 480, height: 480 },
+								isHintEnabled: true,
+								shouldUsePositiveSpaceLens: true,
+								lensStyle: { backgroundColor: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.06)' },
+								imageClassName: 'max-w-full max-h-full object-cover rounded-xl shadow-lg'
+							}}
 						/>
 					</div>
 
@@ -122,7 +143,7 @@ export default function ProductDetails({
 								<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
 									<path d="M12 5v14M5 12h14" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 								</svg>
-								Add to Cart
+								Add to C
 							</button>
 
 							{added ? (

@@ -36,7 +36,7 @@ const products = [
     name: 'YZF-R3',
     brand: 'Yamaha',
     price: 5200,
-    image: 'https://images.unsplash.com/photo-1643824762078-d7307c468ee6?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0',
+    image: 'https://imgcdn.zigwheels.ph/large/gallery/exterior/86/1785/yamaha-yzf-r3-slant-front-view-full-image-650300.jpg',
     shortDescription: 'Lightweight sport bike ideal for new riders; nimble and fuel efficient.',
     specs: {
       model: 'YZF-R3',
