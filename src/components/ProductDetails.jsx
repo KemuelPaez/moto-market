@@ -15,7 +15,7 @@ export default function ProductDetails({
 		return () => window.removeEventListener('keydown', onKey)
 	}, [product, onClose])
 
-	// temporary confirmation state for "Add" action
+	// add confirmation state
 	const [added, setAdded] = useState(false)
 	const addedTimeoutRef = useRef(null)
 	useEffect(() => {
@@ -29,106 +29,129 @@ export default function ProductDetails({
 	const specs = product.specs || {}
 
 	return (
+		// backdrop
 		<div
 			onClick={onClose}
-			className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-5 box-border"
-			aria-modal="true"
 			role="dialog"
+			aria-modal="true"
+			className="fixed inset-0 z-50 flex items-center justify-center p-4"
 		>
+			{/* dim + subtle blur */}
+			<div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+
+			{/* panel */}
 			<div
 				onClick={e => e.stopPropagation()}
-				className="w-full max-w-4xl max-h-90vh bg-background rounded-lg overflow-auto p-5 box-border relative flex gap-5 items-start"
+				className="relative w-full max-w-5xl bg-background rounded-2xl overflow-hidden shadow-2xl grid grid-cols-1 md:grid-cols-12 gap-0"
+				aria-label={`${product.name} details`}
 			>
-				{/* image / preview */}
-				<div style={{ flex: '0 0 420px', maxWidth: 420 }}>
-					<img
-						src={product.image || product.img || product.photo || ''}
-						alt={product.name}
-						className="w-full h-75 object-cover rounded-md bg-background"
-					/>
-				</div>
+				{/* Left: image + color flares */}
+				<div className="md:col-span-5 relative bg-gradient-to-br from-primary/10 to-accent/5 flex items-center justify-center">
+					{/* decorative flares */}
+					<div className="absolute -left-16 -top-10 w-44 h-44 rounded-full bg-gradient-to-tr from-primary to-transparent opacity-40 blur-3xl pointer-events-none" />
+					<div className="absolute -right-16 -bottom-12 w-56 h-56 rounded-full bg-gradient-to-br from-accent/70 to-transparent opacity-30 blur-3xl pointer-events-none" />
 
-				{/* details */}
-				<div className="flex-1">
-					<h3 className="m-0 text-2xl text-text">{product.name}</h3>
-					<p className="mt-2 text-secondary">
-						{product.shortDescription ?? product.description ?? 'No description available.'}
-					</p>
-
-					{/* quick info row */}
-					<div className="mt-3 flex gap-3 flex-wrap">
-						{product.price != null && (
-							<div className="font-bold">${product.price}</div>
-						)}
-						{product.brand && (
-							<div className="px-2 py-1 bg-background rounded-md">{product.brand}</div>
-						)}
-						{product.year && <div className="px-2 py-1 bg-background rounded-md">{product.year}</div>}
+					{/* image container */}
+					<div className="relative w-full h-72 md:h-[420px] flex items-center justify-center p-6 box-border">
+						<img
+							src={product.image || product.img || product.photo || ''}
+							alt={product.name}
+							className="max-w-full max-h-full object-cover rounded-xl shadow-lg"
+						/>
 					</div>
 
-					{/* specifications */}
-					{Object.keys(specs).length > 0 && (
-						<section className="mt-4">
-							<h4 className="m-0 mb-2">Specifications</h4>
-							<ul className="m-0 pl-4.5 text-text">
-								{Object.entries(specs).map(([k, v]) => (
-									<li key={k} className="mb-1.5">
-										<strong className="mr-2">{k}:</strong> {String(v)}
-									</li>
-								))}
-							</ul>
-						</section>
-					)}
-
-					{/* fallback if no specs */}
-					{Object.keys(specs).length === 0 && (
-						<div className="mt-4 text-secondary">No specifications available.</div>
-					)}
+					{/* small brand badge */}
+					<div className="absolute top-4 left-6 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary text-white text-sm font-semibold">
+						{product.brand}
+					</div>
 				</div>
 
-				{/* close button */}
-				<button
-					onClick={onClose}
-					aria-label="Close"
-					className="absolute top-3 right-3 border-none bg-transparent text-xl cursor-pointer"
-				>
-					×
-				</button>
+				{/* Right: content */}
+				<div className="md:col-span-7 p-6 md:p-8 flex flex-col gap-4">
+					{/* header: title + price */}
+					<div className="flex items-start justify-between gap-4">
+						<div>
+							<h3 className="text-2xl md:text-3xl font-bold text-text leading-tight">
+								{product.name}
+							</h3>
+							<p className="mt-2 text-sm text-secondary max-w-prose">
+								{product.shortDescription ?? product.description ?? 'No description available.'}
+							</p>
+						</div>
+						<div className="text-right">
+							<div className="text-xl font-extrabold text-primary">${product.price}</div>
+							<div className="mt-2 text-xs text-secondary">Est. price</div>
+						</div>
+					</div>
 
-				{/* Add / Buy buttons with temporary confirmation */}
-				<div className="mt-auto flex gap-2 items-center">
-					<div className="flex gap-2 items-center">
-						<button
-							className="px-3 py-1 border rounded-md text-sm"
-							onClick={e => {
-								e.stopPropagation()
-								// call App's addToCart with the full product object
-								onAdd(product)
-								// show temporary confirmation
-								setAdded(true)
-								if (addedTimeoutRef.current) clearTimeout(addedTimeoutRef.current)
-								addedTimeoutRef.current = setTimeout(() => setAdded(false), 2000)
-							}}
-						>
-							Add
-						</button>
+					{/* quick meta */}
+					<div className="flex flex-wrap gap-3">
+						{product.year && <span className="px-3 py-1 bg-background/60 rounded-full text-sm">{product.year}</span>}
+						{product.specs?.['engine type'] && <span className="px-3 py-1 bg-background/60 rounded-full text-sm">{product.specs['engine type']}</span>}
+						{product.specs?.['displacement (cc)'] && <span className="px-3 py-1 bg-background/60 rounded-full text-sm">{product.specs['displacement (cc)']} cc</span>}
+					</div>
 
-						{/* small inline confirmation */}
-						{added && (
-							<span className="ml-2 text-green-500 font-semibold">
-								Added ✓
-							</span>
-						)}
+					{/* specs grid */}
+					<section className="mt-2 md:mt-4">
+						<h4 className="text-sm font-semibold text-text mb-2">Specifications</h4>
+						<div className="grid grid-cols-2 gap-3 text-sm text-secondary">
+							{['model','transmission','fuel capacity','engine type','displacement (cc)','wheels type'].map(key => (
+								<div key={key} className="flex flex-col">
+									<span className="text-xs uppercase text-neutral-400">{key}</span>
+									<span className="mt-1 text-text">{specs[key] ?? '—'}</span>
+								</div>
+							))}
+						</div>
+					</section>
 
-						<button
-							className="px-3 py-1 bg-primary text-white rounded-md text-sm"
-							onClick={e => {
-								e.stopPropagation()
-								onBuy(product)
-							}}
-						>
-							Buy
-						</button>
+					{/* actions & footer */}
+					<div className="mt-auto flex items-center justify-between gap-4">
+						{/* left actions */}
+						<div className="flex items-center gap-3">
+							<button
+								onClick={e => {
+									e.stopPropagation()
+									onAdd(product)
+									setAdded(true)
+									if (addedTimeoutRef.current) clearTimeout(addedTimeoutRef.current)
+									addedTimeoutRef.current = setTimeout(() => setAdded(false), 2000)
+								}}
+								className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border bg-background hover:bg-background/95 text-sm font-medium"
+							>
+								{/* add icon */}
+								<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+									<path d="M12 5v14M5 12h14" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+								</svg>
+								Add to Cart
+							</button>
+
+							{added ? (
+								<span className="text-green-500 font-semibold">Added ✓</span>
+							) : null}
+						</div>
+
+						{/* buy / close */}
+						<div className="flex items-center gap-3">
+							<button
+								onClick={e => { e.stopPropagation(); onBuy(product) }}
+								className="px-4 py-2 rounded-lg bg-primary text-white font-semibold shadow-md hover:opacity-95"
+							>
+								Buy Now
+							</button>
+
+							<button
+								onClick={onClose}
+								className="px-3 py-2 rounded-lg bg-background text-sm text-secondary hover:bg-background/90"
+								aria-label="Close"
+							>
+								Close
+							</button>
+						</div>
+					</div>
+
+					{/* subtle divider + hint */}
+					<div className="mt-3 text-xs text-neutral-400">
+						Free shipping on selected models • 30-day returns • 2-year warranty on engine components
 					</div>
 				</div>
 			</div>
