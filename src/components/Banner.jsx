@@ -1,150 +1,140 @@
 import React, { useEffect, useState, useRef } from 'react'
 
-export default function Banner({ brands = [] }) {
-	const [index, setIndex] = useState(0)
-	const [loaded, setLoaded] = useState(() => brands.map(() => false))
-	const mountedRef = useRef(true)
+export default function Banner() {
+const images = [
+	'https://www.shutterstock.com/shutterstock/videos/1095203085/thumb/5.jpg?ip=x480',
+	'https://img.freepik.com/free-photo/lesbian-couple-motorcycle-road-trip_23-2149023877.jpg?semt=ais_hybrid&w=740&q=80',
+	'https://assets.roadrunner.travel/img/2024/08/WING9240.jpg',
+	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-N2XePfIrSqTiqRFG5Lgc6qt1QBVQpHUAgiEYTG0MOGTv9owh1OZwaOjycD9jnr2EgJU&usqp=CAU',
+]
 
-	// advance every 4s
-	useEffect(() => {
-		if (!brands.length) return
-		const id = setInterval(() => setIndex(i => (i + 1) % brands.length), 4000)
-		return () => clearInterval(id)
-	}, [brands])
+const [index, setIndex] = useState(0)
+const [loaded, setLoaded] = useState(() => images.map(() => false))
+const mountedRef = useRef(true)
 
-	useEffect(() => {
-		mountedRef.current = true
-		const imgs = []
-		const nextLoaded = brands.map(() => false)
+// auto advance
+useEffect(() => {
+	if (!images.length) return
+	const id = setInterval(() => setIndex(i => (i + 1) % images.length), 4000)
+	return () => clearInterval(id)
+}, [images])
 
-		brands.forEach((b, i) => {
-			const img = new Image()
-			img.src = imageFor(b)
-			img.onload = () => {
-				if (!mountedRef.current) return
-				nextLoaded[i] = true
-				// update loaded state once per load to trigger reveal
-				setLoaded(prev => {
-					const copy = prev.slice()
-					copy[i] = true
-					return copy
-				})
-			}
-			img.onerror = () => {
-				if (!mountedRef.current) return
-				setLoaded(prev => {
-					const copy = prev.slice()
-					copy[i] = true
-					return copy
-				})
-			}
-			imgs.push(img)
-		})
+// preload images
+useEffect(() => {
+	mountedRef.current = true
+	const imgs = []
+	const nextLoaded = images.map(() => false)
 
-		// initialize loaded array if length changed
+	images.forEach((src, i) => {
+	const img = new Image()
+	img.src = src
+	img.onload = () => {
+		if (!mountedRef.current) return
+		nextLoaded[i] = true
 		setLoaded(prev => {
-			if (prev.length !== brands.length) return brands.map((_, i) => !!nextLoaded[i])
-			return prev
+		const copy = [...prev]
+		copy[i] = true
+		return copy
 		})
-
-		return () => {
-			mountedRef.current = false
-			// drop handlers
-			imgs.forEach(img => {
-				img.onload = null
-				img.onerror = null
-			})
-		}
-	}, [brands])
-
-	if (!brands || brands.length === 0) return null
-
-	const goPrev = () => setIndex(i => (i - 1 + brands.length) % brands.length)
-	const goNext = () => setIndex(i => (i + 1) % brands.length)
-
-	const placeholderImages = {
-		Honda:
-			'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1200&h=480&fit=crop',
-		Kawasaki:
-			'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&h=480&fit=crop',
-		Yamaha:
-			'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=1200&h=480&fit=crop',
-		Triumph:
-			'https://images.unsplash.com/photo-1508431432310-7fec11a74c59?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 	}
-
-	function imageFor(brand) {
-		return (
-			placeholderImages[brand] ||
-			'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&h=480&fit=crop'
-		)
+	img.onerror = () => {
+		if (!mountedRef.current) return
+		setLoaded(prev => {
+		const copy = [...prev]
+		copy[i] = true
+		return copy
+		})
 	}
+	imgs.push(img)
+	})
 
-	return (
+	setLoaded(prev => {
+		if (prev.length !== images.length) return images.map((_, i) => !!nextLoaded[i])
+		return prev
+	})
+
+	return () => {
+	mountedRef.current = false
+	imgs.forEach(img => {
+		img.onload = null
+		img.onerror = null
+	})
+	}
+}, [images])
+
+if (!images || images.length === 0) return null
+
+const goPrev = () => setIndex(i => (i - 1 + images.length) % images.length)
+const goNext = () => setIndex(i => (i + 1) % images.length)
+
+return (
+	<div
+		className="banner bg-black rounded-lg overflow-hidden m-4 h-72 relative"
+		aria-roledescription="carousel"
+	>
+	{/* slides */}
+	<div className="w-full h-full overflow-hidden">
 		<div
-			className="banner bg-black rounded-lg overflow-hidden m-4 h-72 relative"
-			aria-roledescription="carousel"
+		className="slides flex h-full"
+		style={{
+			width: `${images.length * 100}%`,
+			transform: `translateX(-${index * (100 / images.length)}%)`,
+			transition: 'transform 600ms ease',
+		}}
 		>
-			{/* slides viewport */}
-			<div className="w-full h-full overflow-hidden">
-				{/* slides container: one slide per brand */}
-				<div
-					className="slides flex h-full"
-					style={{
-						width: `${brands.length * 100}%`,
-						transform: `translateX(-${index * (100 / brands.length)}%)`,
-						transition: 'transform 600ms ease'
-					}}
-				>
-					{brands.map((b, i) => (
-						<div
-							key={b}
-							className="slide flex items-center justify-center h-full bg-black"
-							style={{
-								flex: `0 0 ${100 / brands.length}%`
-							}}
-						>
-							<img
-								src={imageFor(b)}
-								alt={b}
-								className="w-full h-full object-contain transition-opacity duration-250"
-								style={{
-									opacity: loaded[i] ? 1 : 0,
-									background: '#111'
-								}}
-							/>
-						</div>
-					))}
-				</div>
-			</div>
-
-			{/* controls */}
-			<button
-				onClick={goPrev}
-				aria-label="Previous"
-				className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white border-none p-2 rounded cursor-pointer"
+		{images.map((src, i) => (
+			<div
+				key={i}
+				className="slide flex items-center justify-center h-full bg-black"
+				style={{ flex: `0 0 ${100 / images.length}%` }}
 			>
-				‹
-			</button>
-			<button
-				onClick={goNext}
-				aria-label="Next"
-				className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white border-none p-2 rounded cursor-pointer"
-			>
-				›
-			</button>
-
-			{/* dots */}
-			<div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2">
-				{brands.map((b, i) => (
-					<button
-						key={b}
-						onClick={() => setIndex(i)}
-						aria-label={`Go to ${b}`}
-						className={`w-2.5 h-2.5 rounded-full border-none p-0 cursor-pointer ${i === index ? 'bg-white' : 'bg-white bg-opacity-50'}`}
-					/>
-				))}
+			<img
+				src={src}
+				alt={`Slide ${i + 1}`}
+				className="transition-opacity duration-250"
+				style={{
+					opacity: loaded[i] ? 1 : 0,
+					background: '#111',
+					maxWidth: "900px",
+					maxHeight: "100%",
+					width: "auto",
+					height: "100%",
+					objectFit: "contain",
+					margin: "0 auto"    
+				}}
+			/>
 			</div>
+		))}
 		</div>
-	)
+	</div>
+
+	{/* controls */}
+	<button
+		onClick={goPrev}
+		aria-label="Previous"
+		className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded"
+	>
+		‹
+	</button>
+	<button
+		onClick={goNext}
+		aria-label="Next"
+		className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded"
+	>
+		›
+	</button>
+
+	{/* dots */}
+	<div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2">
+		{images.map((_, i) => (
+		<button
+			key={i}
+			onClick={() => setIndex(i)}
+			aria-label={`Go to slide ${i + 1}`}
+			className={`w-2.5 h-2.5 rounded-full cursor-pointer ${i === index ? 'bg-white' : 'bg-white/50'}`}
+		/>
+		))}
+	</div>
+	</div>
+)
 }

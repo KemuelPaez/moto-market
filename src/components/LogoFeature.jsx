@@ -37,52 +37,44 @@ export default function LogoFeature({
 
 	if (!brands || brands.length === 0) return null
 
-	const minColWidth = imageWidth + 32
-
 	return (
+		// responsive grid: 2 cols mobile, 3 sm, 4 md, 6 lg
 		<div
-			className="p-4"
-			style={{
-				display: 'flex',
-				flexWrap: 'wrap',
-				gap: 12,
-				justifyContent: 'center',
-			}}
 			role="list"
+			className="px-4 py-3"
+			style={{ boxSizing: 'border-box' }}
 		>
-			{brands.map(b => {
-				const isActive = active === b
-				return (
-					<button
-						key={b}
-						onClick={() => onSelect(b)}
-						aria-pressed={isActive}
-						className={`flex items-center justify-center rounded-lg p-2 cursor-pointer box-border`}
-						style={{
-							width: minColWidth,
-							height: imageHeight + 12,
-							border: isActive
-								? '2px solid var(--color-text)'
-								: '1px solid rgba(0,0,0,0.08)',
-							background: isActive
-								? 'var(--color-background)'
-								: 'transparent',
-							padding: 8,
-						}}
-					>
-						<img
-							src={placeholder(b)}
-							alt={b}
-							className="block object-contain"
+			<div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+				{brands.map(b => {
+					const isActive = active === b
+					return (
+						<button
+							key={b}
+							onClick={() => onSelect(b)}
+							aria-pressed={isActive}
+							role="listitem"
+							className={`flex items-center justify-center p-2 rounded-lg transition-shadow focus:outline-none ${
+								isActive ? 'ring-2 ring-primary bg-background' : 'bg-background/80'
+							}`}
 							style={{
-								width: imageWidth,
-								height: imageHeight,
-								objectFit: 'contain',
+								// allow button to size naturally and wrap into grid rows
+								minHeight: imageHeight + 16,
 							}}
-						/>
-					</button>
-				)
-			})}
+						>
+							<img
+								src={placeholder(b)}
+								alt={b}
+								style={{
+									maxWidth: imageWidth,
+									height: imageHeight,
+									objectFit: 'contain',
+									display: 'block'
+								}}
+							/>
+						</button>
+					)
+				})}
+			</div>
 		</div>
 	)
 }

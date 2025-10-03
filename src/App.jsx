@@ -120,9 +120,12 @@ export default function App() {
 		// brand filter
 		if (fBrand) items = items.filter(p => p.brand === fBrand)
 
-		// category filter (map products via categoryMap)
+		// category filter
 		if (category && category !== 'All') {
-			items = items.filter(p => (categoryMap[p.brand] || 'Uncategorized') === category)
+			items = items.filter(p => {
+				const itemCategory = p.category || categoryMap[p.brand] || 'Uncategorized'
+				return itemCategory === category
+			})
 		}
 
 		// simple query match
