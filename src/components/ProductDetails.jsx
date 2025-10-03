@@ -143,7 +143,7 @@ export default function ProductDetails({
 								<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
 									<path d="M12 5v14M5 12h14" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 								</svg>
-								Add to C
+								Add to Cart
 							</button>
 
 							{added ? (
