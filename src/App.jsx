@@ -189,6 +189,15 @@ export default function App() {
 	}
 	const goBackFromBrand = () => setSelectedBrandRoute(null)
 
+	// add a handler to go back to the main/home view
+	const goHome = () => {
+		setSelectedBrandRoute(null)
+		setBrand('All')
+		setQuery('')
+		setSelectedProduct(null)
+		if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' })
+	}
+
 	return (
 		<div
 			className="app-root"
@@ -208,6 +217,7 @@ export default function App() {
 					cartCount={cartCount}
 					theme={dark}
 					onToggleTheme={() => setDark(d => !d)}
+					onHome={goHome} // pass handler
 				/>
 			</div>
 

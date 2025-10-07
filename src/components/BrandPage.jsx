@@ -82,9 +82,9 @@ return (
 		<div className="flex items-center gap-2">
 			<label className="sr-only">Category</label>
 			<select
-			value={category}
-			onChange={e => setCategory(e.target.value)}
-			className="p-2 border rounded-md bg-background text-text"
+				value={category}
+				onChange={e => setCategory(e.target.value)}
+				className="p-2 border rounded-md bg-background text-text"
 			>
 			<option value="All">All Categories</option>
 			<option value="Bigbikes">Bigbikes</option>
@@ -107,7 +107,7 @@ return (
 	{/* products panel */}
 	<div className="surface p-4 rounded-lg">
 		{products.length === 0 && !loading && (
-		<div className="text-secondary py-8 text-center">No motorcycles found for {brand}.</div>
+			<div className="text-secondary py-8 text-center">No motorcycles found for {brand}.</div>
 		)}
 
 		<ProductList products={products} onViewProduct={onViewProduct} />
@@ -117,8 +117,8 @@ return (
 		{loading && <div className="text-secondary">Loading …</div>}
 		{!loading && hasMore && (
 			<button
-			onClick={loadMore}
-			className="px-4 py-2 rounded-md border bg-background text-text hover:shadow-md"
+				onClick={loadMore}
+				className="px-4 py-2 rounded-md border bg-background text-text hover:shadow-md"
 			>
 			Load more
 			</button>

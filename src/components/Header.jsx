@@ -1,4 +1,5 @@
 import React from 'react'
+import logo from '../images/moto-store-logo.png'
 
 export default function Header({
 	brands = [],
@@ -9,7 +10,8 @@ export default function Header({
 	onToggleCart,
 	cartCount = 0,
 	theme = false,
-	onToggleTheme = () => {} 
+	onToggleTheme = () => {},
+	onHome = () => {}
 }) {
 	return (
 		<header className="w-full border-b shadow-sm">
@@ -58,7 +60,18 @@ export default function Header({
 				<div className="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 					{/* Logo */}
 					<div>
-						<h1 className="text-xl font-semibold text-text">Moto Store</h1>
+						<button
+							onClick={onHome}
+							aria-label="Go to home"
+							className="inline-flex items-center gap-3 p-0 border-none bg-transparent"
+						>
+							<img
+								src={logo}
+								alt="Moto Store"
+								className="w-16 h-auto object-contain"
+								style={{ display: 'block' }}
+							/>
+						</button>
 						<p className="text-sm text-text">Find your next ride</p>
 					</div>
 
