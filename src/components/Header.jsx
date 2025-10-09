@@ -1,5 +1,6 @@
 import React from 'react'
 import logo from '../images/moto-store-logo.png'
+import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa"
 
 export default function Header({
 	brands = [],
@@ -18,7 +19,33 @@ export default function Header({
 			{/* Top bar */}
 			<div className="bg-secondary text-white text-sm py-2">
 				<div className="max-w-6xl mx-auto px-4 flex justify-between items-center">
-					<span>Follow our socials</span>
+					<div className="flex items-center gap-2">
+						<span>Follow our socials</span>
+						<a
+							href="https://facebook.com"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="hover:text-blue-500"
+						>
+							<FaFacebook size={18} />
+						</a>
+						<a
+							href="https://instagram.com"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="hover:text-pink-500"
+						>
+							<FaInstagram size={18} />
+						</a>
+						<a
+							href="https://youtube.com"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="hover:text-red-500"
+						>
+							<FaYoutube size={18} />
+						</a>
+					</div>
 					<div className="flex gap-4 items-center">
 						<select
 							className="bg-secondary text-white text-sm border-none focus:ring-2 focus:ring-primary rounded-md px-2 py-1"
