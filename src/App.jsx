@@ -7,6 +7,7 @@ import ProductDetails from './components/ProductDetails'
 import Cart from './components/Cart'
 import Footer from './components/Footer'
 import BrandPage from './components/BrandPage'
+import FavoritesPage from './components/FavoritesPage'
 import productsData from './data/products'
 import './index.css'
 
@@ -35,7 +36,19 @@ export default function App() {
 		} catch {}
 	}, [dark])
 
+	const [favorites, setFavorites] = useState(() => [])
+	const [viewFavorites, setViewFavorites] = useState(false)
+
 	const getKey = product => (product?.id ?? `${product?.brand}::${product?.name}`)
+
+	const toggleFavorite = product => {
+		if (!product) return
+		const key = getKey(product)
+		setFavorites(prev => {
+			if (prev.includes(key)) return prev.filter(k => k !== key)
+			return [...prev, key]
+		})
+	}
 
 	const addToCart = product => {
 		if (!product) return
@@ -53,7 +66,6 @@ export default function App() {
 		})
 	}
 
-	// remove item by id or product object
 	const removeFromCart = identifier => {
 		setCart(prev =>
 			prev.filter(i => {
@@ -64,7 +76,6 @@ export default function App() {
 		)
 	}
 
-	// update quantity (if qty <= 0 remove)
 	const updateCartQty = (identifier, qty) => {
 		setCart(prev =>
 			prev
@@ -78,7 +89,6 @@ export default function App() {
 		)
 	}
 
-	// buy now => add to cart and open cart
 	const buyNow = product => {
 		addToCart(product)
 		setViewCart(true)
@@ -86,22 +96,16 @@ export default function App() {
 
 	const handleCheckout = () => {
 		if (!cart || cart.length === 0) {
-			// nothing to checkout — just close
 			setViewCart(false)
 			return
 		}
-		// simulate checkout
 		const orderSummary = cart.map(i => `${i.name} x${i.qty || 1}`).join('\n')
-		// simple confirmation (replace with real flow later)
 		window.alert(`Order placed:\n\n${orderSummary}\n\nThank you!`)
-		// clear cart and close cart panel
 		setCart([])
 		setViewCart(false)
 	}
 
-	// simulate fetchProducts for future backend (filters, sort, pagination)
 	const fetchProducts = async ({ brand: fBrand = null, category = 'All', sort = 'popular', page = 1, pageSize = 6, query: q = '' } = {}) => {
-		// demo category mapping (adjust to real backend later)
 		const categoryMap = {
 			Honda: 'Bigbikes',
 			Kawasaki: 'Bigbikes',
@@ -117,10 +121,8 @@ export default function App() {
 
 		let items = productsData.slice()
 
-		// brand filter
 		if (fBrand) items = items.filter(p => p.brand === fBrand)
 
-		// category filter
 		if (category && category !== 'All') {
 			items = items.filter(p => {
 				const itemCategory = p.category || categoryMap[p.brand] || 'Uncategorized'
@@ -128,17 +130,14 @@ export default function App() {
 			})
 		}
 
-		// simple query match
 		if (q && q.trim()) {
 			const t = q.toLowerCase()
 			items = items.filter(p => p.name.toLowerCase().includes(t) || (p.shortDescription || '').toLowerCase().includes(t))
 		}
 
-		// sorting
 		if (sort === 'price') {
 			items = items.sort((a, b) => (a.price || 0) - (b.price || 0))
 		} else if (sort === 'latest') {
-			// try to extract numeric suffix from id, fallback to keep order
 			items = items.sort((a, b) => {
 				const na = parseInt((a.id || '').match(/\d+$/)?.[0] || '0', 10)
 				const nb = parseInt((b.id || '').match(/\d+$/)?.[0] || '0', 10)
@@ -153,7 +152,6 @@ export default function App() {
 		return { items: paged, total }
 	}
 
-	// compute top brands by frequency
 	const brandCounts = productsData.reduce((acc, p) => {
 		acc[p.brand] = (acc[p.brand] || 0) + 1
 		return acc
@@ -180,20 +178,29 @@ export default function App() {
 		})
 	})()
 
-	// compute cart item count (sum of quantities)
 	const cartCount = cart.reduce((s, it) => s + (it.qty || 0), 0)
+
+	const favoriteProducts = productsData.filter(p => favorites.includes(getKey(p)))
+	const favoriteCount = favorites.length
 
 	const navigateToBrand = b => {
 		setSelectedBrandRoute(b)
 		setSelectedProduct(null)
+		setViewFavorites(false)
 	}
 	const goBackFromBrand = () => setSelectedBrandRoute(null)
 
-	// add a handler to go back to the main/home view
 	const goHome = () => {
 		setSelectedBrandRoute(null)
 		setBrand('All')
 		setQuery('')
+		setSelectedProduct(null)
+		if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' })
+	}
+
+	const openFavorites = () => {
+		setViewFavorites(true)
+		setSelectedBrandRoute(null)
 		setSelectedProduct(null)
 		if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' })
 	}
@@ -217,7 +224,9 @@ export default function App() {
 					cartCount={cartCount}
 					theme={dark}
 					onToggleTheme={() => setDark(d => !d)}
-					onHome={goHome} // pass handler
+					onHome={goHome}
+					onOpenFavorites={openFavorites}
+					favoriteCount={favoriteCount}
 				/>
 			</div>
 
@@ -246,6 +255,13 @@ export default function App() {
 						onBack={goBackFromBrand}
 						onViewProduct={setSelectedProduct}
 					/>
+				) : viewFavorites ? (
+					<FavoritesPage
+						products={favoriteProducts}
+						onBack={() => setViewFavorites(false)}
+						onViewProduct={setSelectedProduct}
+						onToggleFavorite={toggleFavorite}
+					/>
 				) : (
 					<main className="container">
 						<h2 className="section-title mb-4 text-2xl font-semibold text-text">
@@ -254,6 +270,8 @@ export default function App() {
 						<ProductList
 							products={filtered}
 							onViewProduct={setSelectedProduct}
+							favorites={favorites}
+							onToggleFavorite={toggleFavorite}
 						/>
 					</main>
 				)}
@@ -283,7 +301,7 @@ export default function App() {
 
 			{/* Floating Cart Icon */}
 			<button
-				className="fixed bottom-4 right-4 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary z-50 transition-colors"
+				className="fixed bottom-4 right-4 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary/90 transition-colors duration-200 transform hover:scale-105 z-50"
 				onClick={() => setViewCart(true)}
 				aria-label="Open cart"
 			>

@@ -12,7 +12,9 @@ export default function Header({
 	cartCount = 0,
 	theme = false,
 	onToggleTheme = () => {},
-	onHome = () => {}
+	onHome = () => {},
+	onOpenFavorites = () => {},
+	favoriteCount = 0
 }) {
 	return (
 		<header className="w-full border-b shadow-sm">
@@ -121,6 +123,21 @@ export default function Header({
 								</option>
 							))}
 						</select>
+
+						{/* Favorites button to fix */}
+						<button
+							onClick={() => onOpenFavorites()}
+							className="bg-background text-text px-3 py-2 rounded-md w-full sm:w-auto relative hover:bg-background/90"
+							aria-label="Open favorites"
+						>
+							♥
+							{favoriteCount > 0 && (
+								<span className="absolute -top-2 -right-8 bg-accent text-white text-xs rounded-full px-1 py-0.5 min-w-[18px] text-center font-semibold">
+									{favoriteCount}
+								</span>
+							)}
+						</button>
+
 						<button
 							className="bg-primary text-white px-3 py-2 rounded-md w-full sm:w-auto relative hover:bg-primary"
 							onClick={onToggleCart}
