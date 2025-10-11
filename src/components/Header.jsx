@@ -1,6 +1,6 @@
 import React from 'react'
 import logo from '../images/moto-store-logo.png'
-import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa"
+import { FaFacebook, FaInstagram, FaYoutube, FaHeart } from "react-icons/fa"
 
 export default function Header({
 	brands = [],
@@ -124,15 +124,15 @@ export default function Header({
 							))}
 						</select>
 
-						{/* Favorites button to fix */}
+						{/* Favorites button */}
 						<button
 							onClick={() => onOpenFavorites()}
-							className="bg-background text-text px-3 py-2 rounded-md w-full sm:w-auto relative hover:bg-background/90"
+							className="bg-background text-text px-3 py-2 rounded-md w-full sm:w-auto relative hover:bg-background/90 flex items-center justify-center"
 							aria-label="Open favorites"
 						>
-							♥
+							<FaHeart className="w-5 h-5 text-accent" />
 							{favoriteCount > 0 && (
-								<span className="absolute -top-2 -right-8 bg-accent text-white text-xs rounded-full px-1 py-0.5 min-w-[18px] text-center font-semibold">
+								<span className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 bg-accent text-white text-xs rounded-full px-1 py-0.5 min-w-[18px] text-center font-semibold z-50">
 									{favoriteCount}
 								</span>
 							)}

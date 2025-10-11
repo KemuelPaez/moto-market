@@ -50,6 +50,11 @@ export default function App() {
 		})
 	}
 
+	// NEW: clear all favorites
+	const clearFavorites = () => {
+		setFavorites([])
+	}
+
 	const addToCart = product => {
 		if (!product) return
 		setCart(prev => {
@@ -261,6 +266,7 @@ export default function App() {
 						onBack={() => setViewFavorites(false)}
 						onViewProduct={setSelectedProduct}
 						onToggleFavorite={toggleFavorite}
+						onClearFavorites={clearFavorites}
 					/>
 				) : (
 					<main className="container">
