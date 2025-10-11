@@ -14,7 +14,8 @@ export default function Header({
 	onToggleTheme = () => {},
 	onHome = () => {},
 	onOpenFavorites = () => {},
-	favoriteCount = 0
+	favoriteCount = 0,
+	onOpenSignUp = () => {} // added prop
 }) {
 	return (
 		<header className="w-full border-b shadow-sm">
@@ -79,7 +80,13 @@ export default function Header({
 						</button>
 
 						<button className="hover:underline">Login</button>
-						<button className="hover:underline">Sign Up</button>
+						{/* changed: Sign Up opens modal */}
+						<button
+							className="hover:underline"
+							onClick={onOpenSignUp}
+						>
+							Sign Up
+						</button>
 					</div>
 				</div>
 			</div>

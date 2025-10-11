@@ -8,6 +8,7 @@ import Cart from './components/Cart'
 import Footer from './components/Footer'
 import BrandPage from './components/BrandPage'
 import FavoritesPage from './components/FavoritesPage'
+import SignUpModal from './components/SignUpModal'
 import productsData from './data/products'
 import './index.css'
 
@@ -39,6 +40,8 @@ export default function App() {
 	const [favorites, setFavorites] = useState(() => [])
 	const [viewFavorites, setViewFavorites] = useState(false)
 
+	const [signUpOpen, setSignUpOpen] = useState(false)
+
 	const getKey = product => (product?.id ?? `${product?.brand}::${product?.name}`)
 
 	const toggleFavorite = product => {
@@ -50,7 +53,6 @@ export default function App() {
 		})
 	}
 
-	// NEW: clear all favorites
 	const clearFavorites = () => {
 		setFavorites([])
 	}
@@ -210,6 +212,9 @@ export default function App() {
 		if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' })
 	}
 
+	const openSignUp = () => setSignUpOpen(true)
+	const closeSignUp = () => setSignUpOpen(false)
+
 	return (
 		<div
 			className="app-root"
@@ -232,6 +237,7 @@ export default function App() {
 					onHome={goHome}
 					onOpenFavorites={openFavorites}
 					favoriteCount={favoriteCount}
+					onOpenSignUp={openSignUp}
 				/>
 			</div>
 
@@ -334,6 +340,15 @@ export default function App() {
 			</button>
 
 			<Footer />
+
+			<SignUpModal
+				open={signUpOpen}
+				onClose={closeSignUp}
+				onSignUp={data => {
+					// optional: handle created account (data.name, data.email)
+					console.log('Signed up:', data)
+				}}
+			/>
 
 		</div>
 	)
