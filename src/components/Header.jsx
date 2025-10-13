@@ -13,9 +13,8 @@ export default function Header({
 	theme = false,
 	onToggleTheme = () => {},
 	onHome = () => {},
-	onOpenFavorites = () => {},
-	favoriteCount = 0,
-	onOpenSignUp = () => {} // added prop
+	onOpenFavorites = () => {}, favoriteCount = 0, onOpenSignUp = () => {},
+	onOpenCompare = () => {}, compareCount = 0
 }) {
 	return (
 		<header className="w-full border-b shadow-sm">
@@ -80,7 +79,6 @@ export default function Header({
 						</button>
 
 						<button className="hover:underline">Login</button>
-						{/* changed: Sign Up opens modal */}
 						<button
 							className="hover:underline"
 							onClick={onOpenSignUp}
@@ -144,7 +142,6 @@ export default function Header({
 								</span>
 							)}
 						</button>
-
 						<button
 							className="bg-primary text-white px-3 py-2 rounded-md w-full sm:w-auto relative hover:bg-primary"
 							onClick={onToggleCart}

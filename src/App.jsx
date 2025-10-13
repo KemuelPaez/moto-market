@@ -9,6 +9,7 @@ import Footer from './components/Footer'
 import BrandPage from './components/BrandPage'
 import FavoritesPage from './components/FavoritesPage'
 import SignUpModal from './components/SignUpModal'
+import ComparePage from './components/ComparePage'
 import productsData from './data/products'
 import './index.css'
 
@@ -39,8 +40,11 @@ export default function App() {
 
 	const [favorites, setFavorites] = useState(() => [])
 	const [viewFavorites, setViewFavorites] = useState(false)
-
 	const [signUpOpen, setSignUpOpen] = useState(false)
+
+	// compare state (max 2)
+	const [compareSelection, setCompareSelection] = useState([])
+	const [viewCompare, setViewCompare] = useState(false)
 
 	const getKey = product => (product?.id ?? `${product?.brand}::${product?.name}`)
 
@@ -53,9 +57,25 @@ export default function App() {
 		})
 	}
 
+	// toggle compare selection (max 2)
+	const toggleCompare = product => {
+		if (!product) return
+		const key = getKey(product)
+		setCompareSelection(prev => {
+			if (prev.includes(key)) return prev.filter(k => k !== key)
+			if (prev.length >= 2) {
+				// replace oldest if already 2 selected
+				return [prev[1], key]
+			}
+			return [...prev, key]
+		})
+	}
+
 	const clearFavorites = () => {
 		setFavorites([])
 	}
+
+	const clearCompare = () => setCompareSelection([])
 
 	const addToCart = product => {
 		if (!product) return
@@ -189,6 +209,8 @@ export default function App() {
 
 	const favoriteProducts = productsData.filter(p => favorites.includes(getKey(p)))
 	const favoriteCount = favorites.length
+	const compareProducts = productsData.filter(p => compareSelection.includes(getKey(p)))
+	const compareCount = compareSelection.length
 
 	const navigateToBrand = b => {
 		setSelectedBrandRoute(b)
@@ -210,6 +232,16 @@ export default function App() {
 		setSelectedBrandRoute(null)
 		setSelectedProduct(null)
 		if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' })
+	}
+
+	const openCompare = () => {
+		if (compareSelection.length === 0) {
+			window.alert('Select up to 2 bikes to compare (use the compare button on each card).')
+			return
+		}
+		setViewCompare(true)
+		setSelectedBrandRoute(null)
+		setSelectedProduct(null)
 	}
 
 	const openSignUp = () => setSignUpOpen(true)
@@ -238,6 +270,8 @@ export default function App() {
 					onOpenFavorites={openFavorites}
 					favoriteCount={favoriteCount}
 					onOpenSignUp={openSignUp}
+					onOpenCompare={openCompare}
+					compareCount={compareCount}
 				/>
 			</div>
 
@@ -273,6 +307,14 @@ export default function App() {
 						onViewProduct={setSelectedProduct}
 						onToggleFavorite={toggleFavorite}
 						onClearFavorites={clearFavorites}
+						onToggleCompare={toggleCompare}
+					/>
+				) : viewCompare ? (
+					<ComparePage
+						products={compareProducts}
+						onBack={() => setViewCompare(false)}
+						onRemove={key => setCompareSelection(prev => prev.filter(k => k !== key))}
+						onClear={clearCompare}
 					/>
 				) : (
 					<main className="container">
@@ -284,6 +326,8 @@ export default function App() {
 							onViewProduct={setSelectedProduct}
 							favorites={favorites}
 							onToggleFavorite={toggleFavorite}
+							compareSelection={compareSelection}
+							onToggleCompare={toggleCompare}
 						/>
 					</main>
 				)}
@@ -310,6 +354,25 @@ export default function App() {
 					setSelectedProduct(null)
 				}}
 			/>
+
+			{/* Floating Compare Button */}
+			<button
+				className="fixed bottom-20 right-4 bg-background text-text p-3 rounded-full shadow-lg hover:bg-background/95 transition-colors duration-200 transform hover:scale-105 z-60"
+				onClick={() => openCompare()}
+				aria-label="Open compare"
+				title="Compare selected bikes"
+			>
+				{/* simple compare icon to be changed */}
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+					<rect x="3" y="3" width="7" height="7" />
+					<rect x="14" y="14" width="7" height="7" />
+				</svg>
+				{compareCount > 0 && (
+					<span className="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full px-1 py-0.5 min-w-[18px] text-center font-semibold z-70">
+						{compareCount}
+					</span>
+				)}
+			</button>
 
 			{/* Floating Cart Icon */}
 			<button

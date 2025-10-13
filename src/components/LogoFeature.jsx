@@ -14,7 +14,7 @@ export default function LogoFeature({
 		Yamaha:
 			'https://icon2.cleanpng.com/20180719/jrj/kisspng-yamaha-motor-company-yamaha-fz16-yamaha-motor-euro-pit-bike-yamaha-5b50102cb35ad6.9550497215319736767346.jpg',
 		Kawasaki:
-			'https://www.vhv.rs/dpng/d/509-5092385_kawasaki-logo-design-vector-free-download-logo-kawasaki.png',
+			'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcxp-yM4w3bsROAVCDs0dQJ7FjB-UWLF2E1n9zTUJYjjBVN2DhOeIcndh9Ij4jFlA_3hM&usqp=CAU',
 		Triumph:
 			'https://brandlogos.net/wp-content/uploads/2017/01/triumph_motorcycles-logo_brandlogos.net_a8nqa-512x458.png',
 		Suzuki:
@@ -38,7 +38,6 @@ export default function LogoFeature({
 	if (!brands || brands.length === 0) return null
 
 	return (
-		// responsive grid: 2 cols mobile, 3 sm, 4 md, 6 lg
 		<div
 			role="list"
 			className="px-4 py-3"
@@ -57,7 +56,6 @@ export default function LogoFeature({
 								isActive ? 'ring-2 ring-primary bg-background' : 'bg-background/80'
 							}`}
 							style={{
-								// allow button to size naturally and wrap into grid rows
 								minHeight: imageHeight + 16,
 							}}
 						>
