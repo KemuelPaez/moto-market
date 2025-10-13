@@ -67,7 +67,7 @@ export default function SignUpModal({ open = false, onClose = () => {}, onSignUp
     return (
         <div
             onClick={onClose}
-            className="fixed inset-0 z-60 flex items-center justify-center p-4"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4"
             aria-modal="true"
             role="dialog"
         >

@@ -10,6 +10,7 @@ import BrandPage from './components/BrandPage'
 import FavoritesPage from './components/FavoritesPage'
 import SignUpModal from './components/SignUpModal'
 import ComparePage from './components/ComparePage'
+import LoginModal from './components/LoginModal'
 import productsData from './data/products'
 import './index.css'
 
@@ -41,6 +42,7 @@ export default function App() {
 	const [favorites, setFavorites] = useState(() => [])
 	const [viewFavorites, setViewFavorites] = useState(false)
 	const [signUpOpen, setSignUpOpen] = useState(false)
+	const [loginOpen, setLoginOpen] = useState(false)
 
 	// compare state (max 2)
 	const [compareSelection, setCompareSelection] = useState([])
@@ -247,14 +249,21 @@ export default function App() {
 	const openSignUp = () => setSignUpOpen(true)
 	const closeSignUp = () => setSignUpOpen(false)
 
+	const openLogin = () => setLoginOpen(true)
+	const closeLogin = () => setLoginOpen(false)
+
+	const handleLogin = ({ email } = {}) => {
+		try {
+			window.alert(`Welcome back, ${email || 'user'}!`)
+		} catch {}
+		setLoginOpen(false)
+	}
+
+	// determine if any modal is open
+	const modalOpen = !!(signUpOpen || loginOpen)
+
 	return (
-		<div
-			className="app-root"
-			style={{
-				width: '100%',
-				boxSizing: 'border-box'
-			}}
-		>
+		<div className="app-root" style={{ width: '100%', boxSizing: 'border-box' }}>
 			<div className="w-full flex items-center justify-between box-border bg-secondary">
 				<Header
 					brands={brands}
@@ -270,6 +279,7 @@ export default function App() {
 					onOpenFavorites={openFavorites}
 					favoriteCount={favoriteCount}
 					onOpenSignUp={openSignUp}
+					onOpenLogin={openLogin}
 					onOpenCompare={openCompare}
 					compareCount={compareCount}
 				/>
@@ -357,12 +367,13 @@ export default function App() {
 
 			{/* Floating Compare Button */}
 			<button
+				style={{ display: modalOpen ? 'none' : undefined }} // hide while modal open
 				className="fixed bottom-20 right-4 bg-background text-text p-3 rounded-full shadow-lg hover:bg-background/95 transition-colors duration-200 transform hover:scale-105 z-60"
 				onClick={() => openCompare()}
 				aria-label="Open compare"
 				title="Compare selected bikes"
 			>
-				{/* simple compare icon to be changed */}
+				{/* simple compare icon */}
 				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
 					<rect x="3" y="3" width="7" height="7" />
 					<rect x="14" y="14" width="7" height="7" />
@@ -376,6 +387,7 @@ export default function App() {
 
 			{/* Floating Cart Icon */}
 			<button
+				style={{ display: modalOpen ? 'none' : undefined }} // hide while modal open
 				className="fixed bottom-4 right-4 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary/90 transition-colors duration-200 transform hover:scale-105 z-50"
 				onClick={() => setViewCart(true)}
 				aria-label="Open cart"
@@ -403,6 +415,8 @@ export default function App() {
 			</button>
 
 			<Footer />
+
+			<LoginModal open={loginOpen} onClose={closeLogin} onLogin={handleLogin} />
 
 			<SignUpModal
 				open={signUpOpen}

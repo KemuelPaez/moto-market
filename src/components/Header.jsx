@@ -14,6 +14,7 @@ export default function Header({
 	onToggleTheme = () => {},
 	onHome = () => {},
 	onOpenFavorites = () => {}, favoriteCount = 0, onOpenSignUp = () => {},
+	onOpenLogin = () => {},
 	onOpenCompare = () => {}, compareCount = 0
 }) {
 	return (
@@ -78,7 +79,10 @@ export default function Header({
 							)}
 						</button>
 
-						<button className="hover:underline">Login</button>
+						{/* Login opens LoginModal */}
+						<button className="hover:underline" onClick={onOpenLogin}>Login</button>
+
+						{/* Sign Up opens SignUpModal */}
 						<button
 							className="hover:underline"
 							onClick={onOpenSignUp}
