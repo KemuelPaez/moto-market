@@ -12,6 +12,7 @@ import SignUpModal from './components/SignUpModal'
 import ComparePage from './components/ComparePage'
 import LoginModal from './components/LoginModal'
 import productsData from './data/products'
+import { FaScribd } from "react-icons/fa"
 import './index.css'
 
 export default function App() {
@@ -373,11 +374,7 @@ export default function App() {
 				aria-label="Open compare"
 				title="Compare selected bikes"
 			>
-				{/* simple compare icon */}
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-					<rect x="3" y="3" width="7" height="7" />
-					<rect x="14" y="14" width="7" height="7" />
-				</svg>
+				<FaScribd size={18} />
 				{compareCount > 0 && (
 					<span className="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full px-1 py-0.5 min-w-[18px] text-center font-semibold z-70">
 						{compareCount}
@@ -387,7 +384,7 @@ export default function App() {
 
 			{/* Floating Cart Icon */}
 			<button
-				style={{ display: modalOpen ? 'none' : undefined }} // hide while modal open
+				style={{ display: modalOpen ? 'none' : undefined }}
 				className="fixed bottom-4 right-4 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary/90 transition-colors duration-200 transform hover:scale-105 z-50"
 				onClick={() => setViewCart(true)}
 				aria-label="Open cart"
