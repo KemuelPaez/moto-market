@@ -27,15 +27,15 @@
 
 /* Dark theme overrides (applied when .dark is present on <html>) */
 .dark {
-  --color-background: #071025;
-  --color-surface: #071826;
-  --color-text: #e6eef8;
-  --color-muted: #94a3b8;
-  --color-primary: #06b6d4;
-  --color-accent: #fb7185;
-  --color-secondary: #0b1220;
-  --shadow-color: rgba(0,0,0,0.6);
-  --focus-ring: rgba(6,182,212,0.12);
+  --color-background: #0d1321;   /* deep navy background */
+  --color-surface:    #1d2d44;   /* sections / cards */
+  --color-text:       #f0ebd8;   /* warm light text */
+  --color-muted:      #748cab;   /* muted text / secondary */
+  --color-primary:    #3e5c76;   /* primary actions (deep sea teal) */
+  --color-accent:     #748cab;   /* accent / badges (using muted blue) */
+  --color-secondary:  #1d2d44;   /* secondary bar / subtle surfaces */
+  --shadow-color:     rgba(2,6,23,0.6);
+  --focus-ring:       rgba(62,92,118,0.18); /* primary-based focus ring */
 }
 
 /* Base element styles so variables apply broadly */

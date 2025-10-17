@@ -18,16 +18,16 @@ export default function Footer() {
 					<h4 className="mb-2 text-lg font-bold">Customer Service</h4>
 					<ul className="list-none p-0 m-0 mt-2">
 						<li className="mb-1">
-							<a href="#" className="text-accent no-underline">Help Center</a>
+							<a href="#" className="text-white no-underline hover:text-accent">Help Center</a>
 						</li>
 						<li className="mb-1">
-							<a href="#" className="text-accent no-underline">Contact Us</a>
+							<a href="#" className="text-white no-underline hover:text-accent">Contact Us</a>
 						</li>
 						<li className="mb-1">
-							<a href="#" className="text-accent no-underline">Refund Policy</a>
+							<a href="#" className="text-white no-underline hover:text-accent">Refund Policy</a>
 						</li>
 						<li className="mb-1">
-							<a href="#" className="text-accent no-underline">Shipping Info</a>
+							<a href="#" className="text-white no-underline hover:text-accent">Shipping Info</a>
 						</li>
 					</ul>
 				</div>
@@ -37,16 +37,16 @@ export default function Footer() {
 					<h4 className="mb-2 text-lg font-bold">About</h4>
 					<ul className="list-none p-0 m-0 mt-2">
 						<li className="mb-1">
-							<a href="#" className="text-accent no-underline">About Us</a>
+							<a href="#" className="text-white no-underline hover:text-accent">About Us</a>
 						</li>
 						<li className="mb-1">
-							<a href="#" className="text-accent no-underline">Careers</a>
+							<a href="#" className="text-white no-underline hover:text-accent">Careers</a>
 						</li>
 						<li className="mb-1">
-							<a href="#" className="text-accent no-underline">Socials</a>
+							<a href="#" className="text-white no-underline hover:text-accent">Socials</a>
 						</li>
 						<li className="mb-1">
-							<a href="#" className="text-accent no-underline">Policies</a>
+							<a href="#" className="text-white no-underline hover:text-accent">Policies</a>
 						</li>
 					</ul>
 				</div>
@@ -56,16 +56,16 @@ export default function Footer() {
 					<h4 className="mb-2 text-lg font-bold">Payment</h4>
 					<ul className="list-none p-0 m-0 mt-2">
 						<li className="mb-1">
-							<span className="text-accent">PayPal</span>
+							<a href="#" className="text-white  hover:text-accent ">PayPal</a>
 						</li>
 						<li className="mb-1">
-							<span className="text-accent">Credit / Debit Card</span>
+							<a href="#" className="text-white  hover:text-accent ">Credit / Debit Card</a>
 						</li>
 						<li className="mb-1">
-							<span className="text-accent">Apple Pay</span>
+							<a href="#" className="text-white  hover:text-accent ">Apple Pay</a>
 						</li>
 						<li className="mb-1">
-							<span className="text-accent">Google Pay</span>
+							<a href="#" className="text-white  hover:text-accent ">Google Pay</a>
 						</li>
 					</ul>
 				</div>
