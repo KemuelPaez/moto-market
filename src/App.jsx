@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 import Header from './components/Header'
 import Banner from './components/Banner'
 import LogoFeature from './components/LogoFeature'
@@ -259,6 +261,10 @@ export default function App() {
 		} catch {}
 		setLoginOpen(false)
 	}
+
+	useEffect(() => {
+		AOS.init({ duration: 600, easing: 'ease-out-cubic', once: true })
+	}, [])
 
 	// determine if any modal is open
 	const modalOpen = !!(signUpOpen || loginOpen)
